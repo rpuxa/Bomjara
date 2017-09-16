@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Bomjara</string>
+
+    <string-array name="currency">
+        <item>Бутылки</item>
+        <item>Рубли</item>
+        <item>Евро</item>
+        <item>Биткоины</item>
+    </string-array>
+
+    <string name="banner0">ca-app-pub-9182384050264940/1840850197</string>
+</resources>
