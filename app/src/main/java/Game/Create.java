@@ -8,8 +8,39 @@ public class Create implements Constants {
     public static Chain[] houses = new Chain[10];
     public static Location[] locations = new Location[10];
     public static Jobs[] jobs = new Jobs[10];
+    public static Vip[] vipStore;
 
     static {
+        //VIP STORE
+        vipStore = new Vip[]{
+                new Vip("+10 к макс. запасу еды", false, 10) {
+                    @Override
+                    void reward(Player player) {
+                        player.addMaxIndicators(10, food);
+                    }
+                },
+                new Vip("+10 к макс. запасу здоровья", false, 10) {
+                    @Override
+                    void reward(Player player) {
+                        player.addMaxIndicators(10, health);
+                    }
+                },
+                new Vip("+10 к макс. запасу бодрости", false, 10) {
+                    @Override
+                    void reward(Player player) {
+                        player.addMaxIndicators(10, energy);
+                    }
+                },
+                new Vip("Отключить рекламу в приложении",true, 49) {
+                    @Override
+                    void reward(Player player) {
+                        player.soldVipItems[0] = true;
+                    }
+                }
+        };
+        //end
+
+
         locationChain = new Chain[]{
                 new Chain("Помойка на окраине", 0, 0, 0, 0, 0, none),
                 new Chain("Подъезд", 1, 1, 0, 0, 0, none),

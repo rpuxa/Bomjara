@@ -1,6 +1,9 @@
 package ru.rpuxa.bomjara;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +18,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
 import java.util.ArrayList;
 
 import Game.Action;
@@ -24,14 +35,12 @@ import Game.Create;
 import Game.Location;
 import Game.Player;
 import Game.Settings;
+import Game.Vip;
 
-import static Game.Create.friends;
-import static Game.Create.houses;
-import static Game.Create.locationChain;
-import static Game.Create.locations;
-import static Game.Create.transport;
+import static Game.Create.*;
 
-public class GameActivity extends AppCompatActivity implements Constants,Action.ActionListener,Player.PlayerListener {
+public class GameActivity extends AppCompatActivity implements Constants,
+        Action.ActionListener,Player.PlayerListener, Vip.VipListener {
 
     public static SaveAndLoad saveAndLoad;
     public static Settings settings;
@@ -40,35 +49,106 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
     protected void onCreate(Bundle savedInstanceState) {
         Action.listener = this;
         Player.listener = this;
+        Vip.listener = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_activity);
         updateInfo(Player.currentPlayer);
         updateActions(Player.currentPlayer);
         updateChains(Player.currentPlayer);
         updateRate();
+        updateVipStore(Player.currentPlayer);
         setTips();
         setListeners();
+        showBanner0();
         lastMassage = new Toast(this);
-
+        loadBanner1();
+        loadVipBanner();
+        if (Player.currentPlayer.isCaught())
+            caughtByPolice();
+        if (Player.currentPlayer.isDead())
+            dead();
     }
 
-    private void addAd(){
-       /* MobileAds.initialize(getApplicationContext(),"ca-app-pub-9182384050264940~9510444896");
-        AdView banner0 = (AdView) findViewById(R.id.adBanner0);
-        banner0.loadAd(new AdRequest.Builder().build());*/
+    private AdView banner0;
+    private RewardedVideoAd banner1;
+    private AdRequest adRequest = new AdRequest.Builder().build();
+
+    private void showBanner0(){
+        MobileAds.initialize(getApplicationContext(),"ca-app-pub-9182384050264940~9510444896");
+        banner0 = findViewById(R.id.adBanner0);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        //"BF018E25FF993B133560D7A0B867333E"
+        banner0.setAdListener(new AdListener(){
+            @Override
+            public void onAdOpened() {
+                banner0.setVisibility(View.GONE);
+            }
+        });
+        banner0.loadAd(adRequest);
     }
 
-    private void setTips(){
+    private void loadBanner1(){
+        banner1 = MobileAds.getRewardedVideoAdInstance(this);
+        banner1.loadAd("ca-app-pub-9182384050264940/1237660054", adRequest);
+    }
+
+    private boolean showBanner1(){
+        if (!checkNetworkConnection())
+            return false;
+        banner1.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {}
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+            @Override
+            public void onRewardedVideoAdClosed() {
+                loadBanner1();
+            }
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Player player = Player.currentPlayer;
+                player.setDead(false);
+                player.setCaught(false);
+            }
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+                loadBanner1();
+            }
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+                Player player = Player.currentPlayer;
+                player.setDead(false);
+                player.setCaught(false);
+            }
+        });
+        if (banner1.isLoaded())
+            banner1.show();
+        else {
+            loadBanner1();
+            return false;
+        }
+        loadBanner1();
+        return true;
+    }
+
+    private void setTips() {
         int visible = (settings.isTipsOn()) ? View.VISIBLE : View.GONE;
         @IdRes
         int[] tips = {R.id.tipEnergy,R.id.tipFood,R.id.tipFriend,R.id.tipHeath,
-                R.id.tipHouse,R.id.tipJob,R.id.tipLoc,R.id.tipRate,R.id.tipTransport};
+                R.id.tipHouse,R.id.tipJob,R.id.tipLoc,R.id.tipRate,R.id.tipTransport,
+                R.id.tipVip};
         for (int id : tips)
             findViewById(id).setVisibility(visible);
     }
 
     private void setListeners(){
-        EditText count = (EditText) findViewById(R.id.rateCount);
+        EditText count = findViewById(R.id.rateCount);
         findViewById(R.id.foodButton).setOnClickListener(view -> showMenu(R.id.foodMenu));
         findViewById(R.id.healthButton).setOnClickListener(view -> showMenu(R.id.healthMenu));
         findViewById(R.id.energyButton).setOnClickListener(view -> showMenu(R.id.energyMenu));
@@ -113,6 +193,8 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
         });
         findViewById(R.id.infoToMenu).setOnClickListener(view -> backToMenu());
         findViewById(R.id.quitButton).setOnClickListener(view -> backToMenu());
+        findViewById(R.id.vipButton).setOnClickListener(view -> showMenu(R.id.vipMenu));
+        findViewById(R.id.vipAdd).setOnClickListener(view -> showVipBanner());
     }
 
     private void translate(boolean all ,long count){
@@ -150,7 +232,7 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
     }
 
     private int[] getCurrencies(){
-        Spinner[] spinners = {(Spinner) findViewById(R.id.rateFrom), (Spinner) findViewById(R.id.rateTo)};
+        Spinner[] spinners = {findViewById(R.id.rateFrom), findViewById(R.id.rateTo)};
         int currencies[] = new int[2];
         for (int i = 0; i < 2; i++)
             switch (spinners[i].getSelectedItem().toString()){
@@ -176,7 +258,10 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
                 player.getAge(),player.getLocation(),player.getTransport(),
                 player.getHouse(),player.getFriend(),player.getBottles(),
                 player.getRubles(),player.getEuros(),player.getBitcoins(),
-                player.getRubles(),player.getEuros(),player.getBitcoins()
+                player.getRubles(),player.getEuros(),player.getBitcoins(),
+                String.valueOf(player.getVipMoney()),
+                String.valueOf((int)player.getFood()), String.valueOf((int)player.getHealth()), String.valueOf((int)player.getEnergy()),
+                String.valueOf((int)player.getMaxIndicators()[food]), String.valueOf((int)player.getMaxIndicators()[health]), String.valueOf((int)player.getMaxIndicators()[energy])
         };
 
         @IdRes
@@ -184,22 +269,32 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
                 R.id.info_age,R.id.info_location,R.id.info_transport,
                 R.id.info_house,R.id.info_friend,R.id.info_bottles,
                 R.id.info_rubles,R.id.info_euros,R.id.info_bitcoins,
-                R.id.bar_rubles ,R.id.bar_euros ,R.id.bar_bitcoins
+                R.id.bar_rubles ,R.id.bar_euros ,R.id.bar_bitcoins,
+                R.id.vipVipMoney,
+                R.id.text_food, R.id.text_health, R.id.text_energy,
+                R.id.text_food_max, R.id.text_health_max, R.id.text_energy_max
         };
+
 
         @IdRes
         int[] idsBars = {
-              R.id.bar_food,R.id.bar_health,R.id.bar_energy
+                R.id.bar_food,R.id.bar_health,R.id.bar_energy
         };
+
 
         double[] bars = {
                 player.getFood(),player.getHealth(),player.getEnergy()
         };
 
+        double[] barsMax = player.getMaxIndicators();
+
         for (int i = 0; i < playerInfo.length; i++)
             ((TextView) findViewById(ids[i])).setText(playerInfo[i]);
-        for (int i = 0; i < idsBars.length; i++)
-            ((ProgressBar) findViewById(idsBars[i])).setProgress((int) bars[i]);
+        for (int i = 0; i < idsBars.length; i++) {
+            ProgressBar bar = findViewById(idsBars[i]);
+            bar.setProgress((int) bars[i]);
+            bar.setMax((int) barsMax[i]);
+        }
     }
 
     @Override
@@ -218,14 +313,14 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
             button.setText(action.getName());
             menuButtons[action.getMenu()][(action.isLegal()) ? legal : illegal].add(button);
         }
-        addButtonsToList((LinearLayout) findViewById(R.id.foodLegalList),menuButtons[food][legal]);
-        addButtonsToList((LinearLayout) findViewById(R.id.foodIllegalList),menuButtons[food][illegal]);
-        addButtonsToList((LinearLayout) findViewById(R.id.healthLegalList),menuButtons[health][legal]);
-        addButtonsToList((LinearLayout) findViewById(R.id.healthIllegalList),menuButtons[health][illegal]);
-        addButtonsToList((LinearLayout) findViewById(R.id.energyLegalList),menuButtons[energy][legal]);
-        addButtonsToList((LinearLayout) findViewById(R.id.energyIllegalList),menuButtons[energy][illegal]);
-        addButtonsToList((LinearLayout) findViewById(R.id.jobLegalList),menuButtons[jobs][legal]);
-        addButtonsToList((LinearLayout) findViewById(R.id.jobIllegalList),menuButtons[jobs][illegal]);
+        addButtonsToList(findViewById(R.id.foodLegalList),menuButtons[food][legal]);
+        addButtonsToList(findViewById(R.id.foodIllegalList),menuButtons[food][illegal]);
+        addButtonsToList(findViewById(R.id.healthLegalList),menuButtons[health][legal]);
+        addButtonsToList(findViewById(R.id.healthIllegalList),menuButtons[health][illegal]);
+        addButtonsToList(findViewById(R.id.energyLegalList),menuButtons[energy][legal]);
+        addButtonsToList(findViewById(R.id.energyIllegalList),menuButtons[energy][illegal]);
+        addButtonsToList(findViewById(R.id.jobLegalList),menuButtons[jobs][legal]);
+        addButtonsToList(findViewById(R.id.jobIllegalList),menuButtons[jobs][illegal]);
 
     }
 
@@ -258,7 +353,7 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
             }
             String textCurrent = chains[i][progress[i]].getName();
             ((TextView) findViewById(currentsIds[i])).setText(textCurrent);
-            Button button = (Button) findViewById(idButtons[i]);
+            Button button = findViewById(idButtons[i]);
             button.setText(textButton);
             if (exception) {
                 button.setOnClickListener(null);
@@ -274,20 +369,22 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
     private final int[] menus = {
             R.id.infoMenu, R.id.locFriendMenu,R.id.houseTransportMenu,
             R.id.foodMenu,R.id.healthMenu,R.id.energyMenu,R.id.jobMenu,
-            R.id.rateMenu
+            R.id.rateMenu,R.id.vipMenu
     };
 
-    void showMenu(@IdRes int id){
+    void showMenu(@IdRes int id) {
         for (int menu : menus)
             findViewById(menu).setVisibility(View.GONE);
         findViewById(id).setVisibility(View.VISIBLE);
     }
 
     Toast lastMassage;
+
     @Override
     public void showMassage(String massage){
         showMassage(massage,false);
     }
+
     @Override
     public void showMassage(String massage, boolean isShort){
         lastMassage.cancel();
@@ -309,6 +406,7 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
 
     @Override
     public void dead() {
+        Player.currentPlayer.setDead(true);
         final boolean[] sure = {false};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Бомж умер!")
@@ -317,7 +415,7 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
                         "или начать заного, потеряв прогресс")
                 .setIcon(R.drawable.dead)
                 .setCancelable(false)
-                .setPositiveButton("Воскресить!", (dialog, id) -> dialog.cancel())
+                .setPositiveButton("Воскресить!", (dialog, id) -> {})
                 .setNegativeButton("Начать заного", (dialog, id) -> {});
         AlertDialog alert = builder.create();
         alert.show();
@@ -332,6 +430,23 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
                 sure[0] = true;
             }
         });
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
+            if (!showBanner1()) {
+                Player.currentPlayer.setDead(false);
+                alert.dismiss();
+            } else {
+                new Thread(() -> {
+                    while (Player.currentPlayer.isDead()){
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException ignored) {
+                        }
+                    }
+                    alert.dismiss();
+                }).start();
+            }
+            Player.currentPlayer.setHealth(50);
+        });
     }
 
     private void backToMenu(){
@@ -341,7 +456,8 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
     }
 
     @Override
-    public void catchByPolice(){
+    public void caughtByPolice(){
+        Player.currentPlayer.setCaught(true);
         long money = locations[Player.currentPlayer.location].getFine();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Вас поймали!")
@@ -358,19 +474,134 @@ public class GameActivity extends AppCompatActivity implements Constants,Action.
         Button button = alert.getButton(AlertDialog.BUTTON_NEGATIVE);
         button.setOnClickListener(v -> {
             if (!Player.currentPlayer.addMoney(-money,rub))
-                showMassage("Не хватает средств");
-            else
+                Player.currentPlayer.setMoney(0,rub);
                 alert.dismiss();
+            updateInfo(Player.currentPlayer);
         });
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            alert.dismiss();
+            if (!showBanner1()) {
+                Player.currentPlayer.setCaught(false);
+                alert.dismiss();
+            } else {
+                new Thread(() -> {
+                    while (Player.currentPlayer.isCaught()){
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException ignored) {
+                        }
+                    }
+                    alert.dismiss();
+                }).start();
+            }
         });
     }
 
     @Override
+    public void onResume() {
+        try {
+            banner1.resume(this);
+        } catch (NullPointerException ignore){
+        }
+        super.onResume();
+    }
+
+    @Override
     public void onPause() {
+        try {
+        banner1.pause(this);
+        } catch (NullPointerException ignore){
+        }
         saveAndLoad.save();
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        try {
+        banner1.destroy(this);
+        } catch (NullPointerException ignore){
+        }
+        super.onDestroy();
+    }
+
+    private boolean checkNetworkConnection(){
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    @Override
+    public void updateVipStore(Player player) {
+        LinearLayout store = findViewById(R.id.vipList);
+        store.removeAllViews();
+        int num = 0;
+        for (Vip vip : Create.vipStore){
+            Button item = new Button(this);
+            String text = vip.getName()+ " " + ((vip.isNotInfinity() && player.soldVipItems[num]) ? "(Продано)" : (vip.getCost() + " вал."));
+            item.setText(text);
+            item.setOnClickListener(vip);
+            if (vip.isNotInfinity())
+                num++;
+            store.addView(item);
+        }
+    }
+
+    private RewardedVideoAd vipBanner;
+
+    private void loadVipBanner(){
+        vipBanner = MobileAds.getRewardedVideoAdInstance(this);
+        vipBanner.loadAd("ca-app-pub-9182384050264940/9188603588", adRequest);
+    }
+
+    private void showVipBanner() {
+        if (!checkNetworkConnection())
+            showMassage("Нет подключения к интернету!");
+        else{
+            vipBanner.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoAdLoaded() {
+                }
+
+                @Override
+                public void onRewardedVideoAdOpened() {
+
+                }
+
+                @Override
+                public void onRewardedVideoStarted() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdClosed() {
+                    loadVipBanner();
+                }
+
+                @Override
+                public void onRewarded(RewardItem rewardItem) {
+                    Player.currentPlayer.addVipMoney(1);
+                    showMassage("Получайте награду!");
+                }
+
+                @Override
+                public void onRewardedVideoAdLeftApplication() {
+                    loadVipBanner();
+                }
+
+                @Override
+                public void onRewardedVideoAdFailedToLoad(int i) {
+                    Player player = Player.currentPlayer;
+                    player.setDead(false);
+                    player.setCaught(false);
+                }
+            });
+            if (vipBanner.isLoaded())
+                vipBanner.show();
+            else
+                showMassage("Ошибка загрузки. Попробуйте чуть позже");
+            loadVipBanner();
+        }
     }
 }
 

@@ -47,7 +47,6 @@ public class Action implements Constants, View.OnClickListener{
     @Override
     public void onClick(View view) {
         Player player = Player.currentPlayer;
-
         if (!player.addMoney(moneyAdd,currency)) {
             listener.showMassage("Не хватает средств!");
         } else if (legal || illegalAction()) {
@@ -57,6 +56,7 @@ public class Action implements Constants, View.OnClickListener{
             listener.showMassage(addToStr(food,"Еда",true) + addToStr(health,"Здоровье",false) + addToStr(energy,"Бодрость",false),true);
             player.addAge();
             player.checkHealth();
+            player.addRandVipMoney();
         }
         listener.updateInfo(player);
     }
@@ -75,7 +75,7 @@ public class Action implements Constants, View.OnClickListener{
 
     private boolean illegalAction(){
         if (new Random().nextInt(10) == 5){
-            listener.catchByPolice();
+            listener.caughtByPolice();
             return false;
         } else {
             return true;
@@ -95,6 +95,6 @@ public class Action implements Constants, View.OnClickListener{
 
         void updateChains(Player player);
 
-        void catchByPolice();
+        void caughtByPolice();
     }
 }

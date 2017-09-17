@@ -17,11 +17,18 @@ public class Player implements Constants,Serializable {
     private long rubles;
     private long euros;
     private long bitcoins;
+    private long vipMoney;
     private double food;
     private double health;
     private double energy;
+    private double[] maxIndicators = {100,100,100};
+    public boolean[] soldVipItems = new boolean[Create.vipStore.length];
+    private boolean dead;
+    private boolean caught;
 
-    private Player(int id,int age,int location, int transport, int house, int friend, long bottles, long rubles, long euros, long bitcoins, double food, double health, double energy) {
+    private Player(int id, int age, int location, int transport, int house, int friend,
+                   long bottles, long rubles, long euros, long bitcoins, long vipMoney,
+                   double food, double health, double energy, boolean dead, boolean caught) {
         this.id = id;
         this.age = age;
         this.location = location;
@@ -32,13 +39,39 @@ public class Player implements Constants,Serializable {
         this.rubles = rubles;
         this.euros = euros;
         this.bitcoins = bitcoins;
+        this.vipMoney = vipMoney;
         this.food = food;
         this.health = health;
         this.energy = energy;
+        this.dead = dead;
+        this.caught = caught;
     }
 
     public static Player createPlayer(){
-        return new Player(new Random().nextInt(),0,0,0,0,0,0,100,0,0,75,75,50);
+        return new Player(new Random().nextInt(),0,2,2,3,3,0,1000,0,0,0,75,75,50,false,false);
+    }
+
+    void addMaxIndicators(double count, int type){
+        maxIndicators[type] += count;
+    }
+
+    public double[] getMaxIndicators() {
+        return maxIndicators;
+    }
+
+    public long getVipMoney() {
+        return vipMoney;
+    }
+
+    public void addVipMoney(long vipMoney) {
+        this.vipMoney += vipMoney;
+    }
+
+    void addRandVipMoney(){
+        if (new Random().nextInt(35) == 10){
+            vipMoney++;
+            Action.listener.showMassage("Вы нашли !");
+        }
     }
 
     private double gauss(){
@@ -50,12 +83,13 @@ public class Player implements Constants,Serializable {
         return gauss + 1.5;
     }
 
-    private double overflow(double type, double num){
-        if (type + num > 100)
-            return 100;
-        else if (type + num < 0)
+    private double overflow(double count, double num, int type){
+        double max = maxIndicators[type];
+        if (count + num > max)
+            return max;
+        else if (count + num < 0)
             return 0;
-        return type + num;
+        return count + num;
     }
 
     private double coefficient(double num, boolean positive){
@@ -63,22 +97,22 @@ public class Player implements Constants,Serializable {
         return (positive) ? percent : 2 - percent;
     }
 
-    public long addFood(double count){
-        double result = overflow(food, count * gauss());
+    long addFood(double count){
+        double result = overflow(food, count * gauss(),Constants.food);
         long added = (long) (result - food);
         food = result;
         return added;
     }
 
-    public long addHealth(double count){
-        double result = overflow(health, count * gauss() * coefficient(food, count > 0));
+    long addHealth(double count){
+        double result = overflow(health, count * gauss() * coefficient(food, count > 0),Constants.health);
         long added = (long) (result - health);
         health = result;
         return added;
     }
 
-    public long addEnergy(double count){
-        double result = overflow(energy,count * gauss() * coefficient(health, count > 0));
+    long addEnergy(double count){
+        double result = overflow(energy,count * gauss() * coefficient(health, count > 0),Constants.energy);
         long added = (long) (result - energy);
         energy = result;
         return added;
@@ -119,8 +153,25 @@ public class Player implements Constants,Serializable {
         }
         return true;
     }
+    
+    public void setMoney(long money, int currency){
+        switch (currency) {
+            case bottle:
+                bottles = money;
+                break;
+            case rub:
+                rubles = money;
+                break;
+            case euro:
+                euros = money;
+                break;
+            case bitcoin:
+                bitcoins = money;
+                break;
+        }
+    }
 
-    public void addAge(){
+    void addAge(){
         age++;
     }
 
@@ -172,6 +223,22 @@ public class Player implements Constants,Serializable {
         return energy;
     }
 
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public boolean isCaught() {
+        return caught;
+    }
+
+    public void setCaught(boolean caught) {
+        this.caught = caught;
+    }
+
     private static final double bottlesToRubles = 1.0/1.5;
     private static final double rublesToRubles = 1;
     private static final double eurosToRubles = 1.0/70;
@@ -209,6 +276,9 @@ public class Player implements Constants,Serializable {
     void checkHealth() {
         if (health == 0)
             listener.dead();
+    }
 
+    public void setHealth(double health) {
+        this.health = health;
     }
 }

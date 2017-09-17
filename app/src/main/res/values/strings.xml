@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bomjara</string>
+    <string name="app_name">Симулятор бомжа</string>
 
     <string-array name="currency">
         <item>Бутылки</item>
