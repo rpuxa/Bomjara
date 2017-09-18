@@ -47,7 +47,7 @@ public class Action implements Constants, View.OnClickListener{
     @Override
     public void onClick(View view) {
         Player player = Player.currentPlayer;
-        if (!player.addMoney(moneyAdd,currency)) {
+        if (!player.addMoney(moneyAdd,currency,false)) {
             listener.showMassage("Не хватает средств!");
         } else if (legal || illegalAction()) {
             long energy = player.addEnergy(energyAdd);

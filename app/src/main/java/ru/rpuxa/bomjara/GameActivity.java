@@ -84,7 +84,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 banner0.setVisibility(View.GONE);
             }
         });
-        banner0.loadAd(adRequest);
+        if (settings.isAdOn())
+            banner0.loadAd(adRequest);
+        else
+            banner0.setVisibility(View.GONE);
     }
 
     private void loadBanner1(){
@@ -205,8 +208,8 @@ public class GameActivity extends AppCompatActivity implements Constants,
             count = player.getMoney(currencies[0]);
         if (currencies[0] == currencies[1])
             showMassage("Выберите разные валюты!");
-        else if (player.addMoney(-count,currencies[0])) {
-            player.addMoney((long) ((double)count / rates[currencies[0]] * rates[currencies[1]]), currencies[1]);
+        else if (player.addMoney(-count,currencies[0],true)) {
+            player.addMoney((long) ((double)count / rates[currencies[0]] * rates[currencies[1]]), currencies[1],true);
             if (count != 0) {
                 showMassage("Обмен совершен!");
                 updateInfo(player);
@@ -253,7 +256,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
     }
 
     @Override
-    public void updateInfo(Player player){
+    public void updateInfo(Player player) {
         String playerInfo[] = new String[]{
                 player.getAge(),player.getLocation(),player.getTransport(),
                 player.getHouse(),player.getFriend(),player.getBottles(),
@@ -298,7 +301,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
     }
 
     @Override
-    public void updateActions(Player player){
+    public void updateActions(Player player) {
         ArrayList<Button>[][] menuButtons = new ArrayList[countMenus][2];
         final int legal = 0, illegal = 1;
         for (ArrayList<Button>[] b : menuButtons){
@@ -324,7 +327,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     }
 
-    private void addButtonsToList(LinearLayout legalMenu, ArrayList<Button> actions){
+    private void addButtonsToList(LinearLayout legalMenu, ArrayList<Button> actions) {
         legalMenu.removeAllViews();
         for (Button button : actions)
             legalMenu.addView(button);
@@ -446,6 +449,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 }).start();
             }
             Player.currentPlayer.setHealth(50);
+            updateInfo(Player.currentPlayer);
         });
     }
 
@@ -473,7 +477,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         alert.show();
         Button button = alert.getButton(AlertDialog.BUTTON_NEGATIVE);
         button.setOnClickListener(v -> {
-            if (!Player.currentPlayer.addMoney(-money,rub))
+            if (!Player.currentPlayer.addMoney(-money,rub,true))
                 Player.currentPlayer.setMoney(0,rub);
                 alert.dismiss();
             updateInfo(Player.currentPlayer);
@@ -580,8 +584,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
                 @Override
                 public void onRewarded(RewardItem rewardItem) {
-                    Player.currentPlayer.addVipMoney(1);
+                    Player.currentPlayer.addVipMoney(3);
                     showMassage("Получайте награду!");
+                    updateInfo(Player.currentPlayer);
+                    updateVipStore(Player.currentPlayer);
                 }
 
                 @Override

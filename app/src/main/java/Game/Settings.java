@@ -3,10 +3,12 @@ package Game;
 import java.io.Serializable;
 
 public class Settings implements Serializable {
-    boolean tipsOn;
+    private boolean tipsOn;
+    private boolean adOn;
 
-    public Settings(boolean tipsOn) {
+    public Settings() {
         this.tipsOn = true;
+        this.adOn = true;
     }
 
     public boolean isTipsOn() {
@@ -15,5 +17,13 @@ public class Settings implements Serializable {
 
     public void setTipsOn(boolean tipsOn) {
         this.tipsOn = tipsOn;
+    }
+
+    public boolean isAdOn() {
+        return adOn;
+    }
+
+    public void setAdOn(boolean adOn) {
+        this.adOn = adOn;
     }
 }

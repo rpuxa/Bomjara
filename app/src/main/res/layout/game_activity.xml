@@ -104,7 +104,7 @@
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
                 ads:srcCompat="@drawable/vip"
-                app:srcCompat="@color/colorPrimary" />
+                />
 
             <ImageButton
                 android:id="@+id/quitButton"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/infoList"
@@ -1052,7 +1052,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Вип магазин" />
+                android:text="Здесь вы можете купить уникальные товары за особую валюту - вал.  Они могут попадаться, когда вы совершаете какое либо действие. Либо вы можете их получить, посмотрев рекламу (кнопка добавить)." />
 
             <Space
                 android:layout_width="match_parent"

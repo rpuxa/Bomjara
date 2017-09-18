@@ -48,7 +48,7 @@ public class Player implements Constants,Serializable {
     }
 
     public static Player createPlayer(){
-        return new Player(new Random().nextInt(),0,2,2,3,3,0,1000,0,0,0,75,75,50,false,false);
+        return new Player(new Random().nextInt(),0,0,0,0,0,0,100,0,0,1000,75,75,50,false,false);
     }
 
     void addMaxIndicators(double count, int type){
@@ -68,7 +68,7 @@ public class Player implements Constants,Serializable {
     }
 
     void addRandVipMoney(){
-        if (new Random().nextInt(35) == 10){
+        if (new Random().nextInt(29) == 10){
             vipMoney++;
             Action.listener.showMassage("Вы нашли !");
         }
@@ -92,7 +92,9 @@ public class Player implements Constants,Serializable {
         return count + num;
     }
 
-    private double coefficient(double num, boolean positive){
+    private double coefficient(double num, boolean positive, int type){
+        double max = maxIndicators[type];
+        num = num/max * 100;
         double percent = (num + 50)/100;
         return (positive) ? percent : 2 - percent;
     }
@@ -105,22 +107,22 @@ public class Player implements Constants,Serializable {
     }
 
     long addHealth(double count){
-        double result = overflow(health, count * gauss() * coefficient(food, count > 0),Constants.health);
+        double result = overflow(health, count * gauss() * coefficient(food, count > 0,Constants.food),Constants.health);
         long added = (long) (result - health);
         health = result;
         return added;
     }
 
     long addEnergy(double count){
-        double result = overflow(energy,count * gauss() * coefficient(health, count > 0),Constants.energy);
+        double result = overflow(energy,count * gauss() * coefficient(health, count > 0,Constants.health),Constants.energy);
         long added = (long) (result - energy);
         energy = result;
         return added;
     }
 
-    public boolean addMoney(long money, int currency){
-        if (money > 0)
-            money *= coefficient(energy, money > 0);
+    public boolean addMoney(long money, int currency, boolean withoutCoefficient){
+        if (!withoutCoefficient && money > 0)
+            money *= coefficient(energy, true,Constants.energy);
         switch (currency) {
             case bottle:
                 bottles += money;

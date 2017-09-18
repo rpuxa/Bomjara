@@ -1,5 +1,7 @@
 package Game;
 
+import ru.rpuxa.bomjara.GameActivity;
+
 public class Create implements Constants {
 
     public static Chain[] locationChain = new Chain[10];
@@ -10,31 +12,35 @@ public class Create implements Constants {
     public static Jobs[] jobs = new Jobs[10];
     public static Vip[] vipStore;
 
+    public static VipItemListener listener0;
     static {
         //VIP STORE
         vipStore = new Vip[]{
-                new Vip("+10 к макс. запасу еды", false, 10) {
+                new Vip("+10 к макс. запасу еды", false, 9) {
                     @Override
                     void reward(Player player) {
                         player.addMaxIndicators(10, food);
                     }
                 },
-                new Vip("+10 к макс. запасу здоровья", false, 10) {
+                new Vip("+10 к макс. запасу здоровья", false, 9) {
                     @Override
                     void reward(Player player) {
                         player.addMaxIndicators(10, health);
                     }
                 },
-                new Vip("+10 к макс. запасу бодрости", false, 10) {
+                new Vip("+10 к макс. запасу бодрости", false, 9) {
                     @Override
                     void reward(Player player) {
                         player.addMaxIndicators(10, energy);
                     }
                 },
-                new Vip("Отключить рекламу в приложении",true, 49) {
+                new Vip("Отключить баннер сверху",true, 29) {
                     @Override
                     void reward(Player player) {
                         player.soldVipItems[0] = true;
+                        GameActivity.settings.setAdOn(false);
+                        listener0.saveSettings();
+                        Action.listener.showMassage("Перезайдите в игру, чтобы баннер убался.");
                     }
                 }
         };
@@ -147,5 +153,9 @@ public class Create implements Constants {
                 new Action("Работать бомбилой", 470, rub, -10, -30, -15, Constants.jobs, true),
                 new Action("Украсть сумочку", 500, rub, -10, -10, -10, Constants.jobs, false)
         );
+    }
+
+    public interface VipItemListener{
+        void saveSettings();
     }
 }

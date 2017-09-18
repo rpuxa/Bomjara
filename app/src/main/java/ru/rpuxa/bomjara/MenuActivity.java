@@ -16,13 +16,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import Game.Create;
 import Game.Player;
 import Game.Settings;
 
-public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
+public class MenuActivity extends AppCompatActivity implements SaveAndLoad, Create.VipItemListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         GameActivity.saveAndLoad = this;
+        Create.listener0 = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
         findViewById(R.id.continueGame).setOnClickListener(view -> {
@@ -48,19 +50,19 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
             alert.show();
         });
         findViewById(R.id.settings).setOnClickListener(view -> {
-            LinearLayout menuSet = (LinearLayout) findViewById(R.id.menuSettings);
+            LinearLayout menuSet = findViewById(R.id.menuSettings);
             if (menuSet.getVisibility() == View.VISIBLE)
                 menuSet.setVisibility(View.GONE);
             else
                 menuSet.setVisibility(View.VISIBLE);
         });
         findViewById(R.id.exit).setOnClickListener(view -> finishAffinity());
-        CheckBox hints = (CheckBox) findViewById(R.id.turnOnHints);
+        CheckBox hints = findViewById(R.id.turnOnHints);
 
         if (load(SETTINGS))
             hints.setChecked(GameActivity.settings.isTipsOn());
         else {
-            GameActivity.settings = new Settings(true);
+            GameActivity.settings = new Settings();
             hints.setChecked(true);
         }
         hints.setOnCheckedChangeListener((b, isChecked) -> {
@@ -126,5 +128,10 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
             return false;
         }
+    }
+
+    @Override
+    public void saveSettings() {
+        save(SETTINGS);
     }
 }
