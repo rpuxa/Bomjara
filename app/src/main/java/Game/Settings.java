@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 public class Settings implements Serializable {
     private boolean tipsOn;
-    private boolean adOn;
 
     public Settings() {
         this.tipsOn = true;
-        this.adOn = true;
     }
 
     public boolean isTipsOn() {
@@ -19,11 +17,4 @@ public class Settings implements Serializable {
         this.tipsOn = tipsOn;
     }
 
-    public boolean isAdOn() {
-        return adOn;
-    }
-
-    public void setAdOn(boolean adOn) {
-        this.adOn = adOn;
-    }
 }

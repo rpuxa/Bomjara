@@ -20,11 +20,11 @@ import Game.Create;
 import Game.Player;
 import Game.Settings;
 
-public class MenuActivity extends AppCompatActivity implements SaveAndLoad, Create.VipItemListener {
+public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         GameActivity.saveAndLoad = this;
-        Create.listener0 = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
         findViewById(R.id.continueGame).setOnClickListener(view -> {
@@ -128,10 +128,5 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad, Crea
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
             return false;
         }
-    }
-
-    @Override
-    public void saveSettings() {
-        save(SETTINGS);
     }
 }

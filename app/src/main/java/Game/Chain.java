@@ -37,7 +37,7 @@ public class Chain {
             Action.listener.showMassage("Требуется кореш: " + Create.friends[friendNeeded].getName());
         else if (locationNeeded > player.location)
             Action.listener.showMassage("Требуется локация: " + Create.locationChain[locationNeeded].getName());
-        else if (!player.addMoney(moneyAdd, currency))
+        else if (!player.addMoney(moneyAdd, currency,true))
             Action.listener.showMassage("Не хватает средств!");
         else {
             if (id == 0)

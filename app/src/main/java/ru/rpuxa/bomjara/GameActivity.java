@@ -47,6 +47,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        createVipStore();
         Action.listener = this;
         Player.listener = this;
         Vip.listener = this;
@@ -84,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 banner0.setVisibility(View.GONE);
             }
         });
-        if (settings.isAdOn())
+        if (!Player.currentPlayer.soldVipItems[adFree])
             banner0.loadAd(adRequest);
         else
             banner0.setVisibility(View.GONE);
@@ -96,8 +97,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
     }
 
     private boolean showBanner1(){
-        if (!checkNetworkConnection())
+        if (!checkNetworkConnection()) {
+            showMassage("Нет интернет соединения!");
             return false;
+        }
         banner1.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {}
@@ -134,6 +137,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
             banner1.show();
         else {
             loadBanner1();
+            showMassage("Загрузка.. Поробуйте чуть позже");
             return false;
         }
         loadBanner1();
@@ -165,10 +169,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
         });
         findViewById(R.id.rateTranslate).setOnClickListener(view -> {
             try {
-                translate(false, Long.parseLong(count.getText().toString()));
+                translate(false, Long.parseLong(count.getText().toString()),null);
             } catch (NumberFormatException ignore) {}
         });
-        findViewById(R.id.rateTranslateAll).setOnClickListener(view -> translate(true,0));
+        findViewById(R.id.rateTranslateAll).setOnClickListener(view -> translate(true,0,null));
         ((Spinner)findViewById(R.id.rateFrom)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -200,9 +204,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
         findViewById(R.id.vipAdd).setOnClickListener(view -> showVipBanner());
     }
 
-    private void translate(boolean all ,long count){
+    private void translate(boolean all ,long count, int[] currencies){
         Player player = Player.currentPlayer;
-        int[] currencies = getCurrencies();
+        if (currencies == null)
+            currencies = getCurrencies();
         double[] rates = player.getRate();
         if (all)
             count = player.getMoney(currencies[0]);
@@ -264,7 +269,8 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 player.getRubles(),player.getEuros(),player.getBitcoins(),
                 String.valueOf(player.getVipMoney()),
                 String.valueOf((int)player.getFood()), String.valueOf((int)player.getHealth()), String.valueOf((int)player.getEnergy()),
-                String.valueOf((int)player.getMaxIndicators()[food]), String.valueOf((int)player.getMaxIndicators()[health]), String.valueOf((int)player.getMaxIndicators()[energy])
+                String.valueOf((int)player.getMaxIndicators()[food]), String.valueOf((int)player.getMaxIndicators()[health]), String.valueOf((int)player.getMaxIndicators()[energy]),
+                String.valueOf((int)player.getVipMoney())
         };
 
         @IdRes
@@ -275,7 +281,8 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 R.id.bar_rubles ,R.id.bar_euros ,R.id.bar_bitcoins,
                 R.id.vipVipMoney,
                 R.id.text_food, R.id.text_health, R.id.text_energy,
-                R.id.text_food_max, R.id.text_health_max, R.id.text_energy_max
+                R.id.text_food_max, R.id.text_health_max, R.id.text_energy_max,
+                R.id.info_vipMoney
         };
 
 
@@ -434,10 +441,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
             }
         });
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
-            if (!showBanner1()) {
-                Player.currentPlayer.setDead(false);
-                alert.dismiss();
-            } else {
+            if (showBanner1()) {
                 new Thread(() -> {
                     while (Player.currentPlayer.isDead()){
                         try {
@@ -446,10 +450,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
                         }
                     }
                     alert.dismiss();
+                    Player.currentPlayer.setHealth(50);
+                    updateInfo(Player.currentPlayer);
                 }).start();
             }
-            Player.currentPlayer.setHealth(50);
-            updateInfo(Player.currentPlayer);
         });
     }
 
@@ -460,7 +464,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
     }
 
     @Override
-    public void caughtByPolice(){
+    public void caughtByPolice() {
         Player.currentPlayer.setCaught(true);
         long money = locations[Player.currentPlayer.location].getFine();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -470,25 +474,31 @@ public class GameActivity extends AppCompatActivity implements Constants,
                         "или заплатить штраф (" + Action.moneyToStr(money, rub) + ")")
                 .setIcon(R.drawable.prison)
                 .setCancelable(false)
-                .setPositiveButton("Посмотреть рекламу (бесплатно)!", (dialog, id) -> {})
-                .setNegativeButton("Заплатить штраф", (dialog, id) -> {});
+                .setPositiveButton("Посмотреть рекламу (бесплатно)!", (dialog, id) -> {
+                })
+                .setNegativeButton("Заплатить штраф", (dialog, id) -> {
+                });
 
         AlertDialog alert = builder.create();
         alert.show();
         Button button = alert.getButton(AlertDialog.BUTTON_NEGATIVE);
         button.setOnClickListener(v -> {
-            if (!Player.currentPlayer.addMoney(-money,rub,true))
-                Player.currentPlayer.setMoney(0,rub);
-                alert.dismiss();
+            if (!Player.currentPlayer.addMoney(-money, rub, true)) {
+                translate(true, 0, new int[]{euro, rub});
+                if (!Player.currentPlayer.addMoney(-money, rub, true)) {
+                    translate(true, 0, new int[]{bitcoin, rub});
+                    if (!Player.currentPlayer.addMoney(-money, rub, true))
+                        Player.currentPlayer.setMoney(0, rub);
+
+                }
+            }
+            alert.dismiss();
             updateInfo(Player.currentPlayer);
         });
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            if (!showBanner1()) {
-                Player.currentPlayer.setCaught(false);
-                alert.dismiss();
-            } else {
+            if (showBanner1()) {
                 new Thread(() -> {
-                    while (Player.currentPlayer.isCaught()){
+                    while (Player.currentPlayer.isCaught()) {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ignored) {

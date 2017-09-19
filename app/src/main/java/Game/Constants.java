@@ -15,4 +15,7 @@ public interface Constants {
     int health = 1;
     int energy = 2;
     int jobs = 3;
+
+    //VipStore
+    int adFree = 0;
 }

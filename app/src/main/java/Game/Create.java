@@ -1,7 +1,5 @@
 package Game;
 
-import ru.rpuxa.bomjara.GameActivity;
-
 public class Create implements Constants {
 
     public static Chain[] locationChain = new Chain[10];
@@ -12,65 +10,37 @@ public class Create implements Constants {
     public static Jobs[] jobs = new Jobs[10];
     public static Vip[] vipStore;
 
-    public static VipItemListener listener0;
     static {
-        //VIP STORE
-        vipStore = new Vip[]{
-                new Vip("+10 к макс. запасу еды", false, 9) {
-                    @Override
-                    void reward(Player player) {
-                        player.addMaxIndicators(10, food);
-                    }
-                },
-                new Vip("+10 к макс. запасу здоровья", false, 9) {
-                    @Override
-                    void reward(Player player) {
-                        player.addMaxIndicators(10, health);
-                    }
-                },
-                new Vip("+10 к макс. запасу бодрости", false, 9) {
-                    @Override
-                    void reward(Player player) {
-                        player.addMaxIndicators(10, energy);
-                    }
-                },
-                new Vip("Отключить баннер сверху",true, 29) {
-                    @Override
-                    void reward(Player player) {
-                        player.soldVipItems[0] = true;
-                        GameActivity.settings.setAdOn(false);
-                        listener0.saveSettings();
-                        Action.listener.showMassage("Перезайдите в игру, чтобы баннер убался.");
-                    }
-                }
-        };
-        //end
-
+        createVipStore();
 
         locationChain = new Chain[]{
                 new Chain("Помойка на окраине", 0, 0, 0, 0, 0, none),
                 new Chain("Подъезд", 1, 1, 0, 0, 0, none),
-                new Chain("Жилой район", 2, 2, 1, 1, 0, none)
+                new Chain("Жилой район", 2, 2, 1, 1, 0, none),
+                new Chain("Дача", 3, 3, 3, 0, 0, none)
         };
 
         friends = new Chain[]{
                 new Chain("Без кореша", 0, 0, 0, 0, 0, none),
                 new Chain("Сосед по подъезду Василий", 0, 0, 0, 1, -60, bottle),
                 new Chain("Гопник Валера", 2, 0, 0, 1, -300, bottle),
-                new Chain("Бомбила Семён", 3, 0, 0, 2, -1000, rub)
+                new Chain("Бомбила Семён", 3, 0, 0, 2, -1000, rub),
+                new Chain("Прораб Михалыч", 4, 0, 0, 2, 50, euro)
         };
 
         transport = new Chain[]{
                 new Chain("Без транспорта", 0, 0, 0, 0, 0, none),
                 new Chain("Самокат", 0, 0, 0, 0, -500, rub),
-                new Chain("Велосипед", 1, 1, 0, 1, -3000, rub),
-                new Chain("Старая копейка", 1, 1, 0, 1, -10000, rub),
+                new Chain("Велосипед", 0, 1, 0, 1, -3000, rub),
+                new Chain("Старая копейка", 0, 1, 0, 1, -10000, rub),
+                new Chain("Девятка", 0, 2, 3, 2, -50000, rub),
         };
 
         houses = new Chain[]{
                 new Chain("Помойка", 0, 0, 0, 0, 0, none),
                 new Chain("Палатка б/у", 0, 0, 0, 0, -1000, rub),
-                new Chain("Гараж улитка", 2, 1, 0, 1, -9000, rub)
+                new Chain("Гараж улитка", 2, 1, 0, 1, -9000, rub),
+                new Chain("Сарай", 2, 1, 0, 1, -40000, rub)
         };
 
 
@@ -139,12 +109,12 @@ public class Create implements Constants {
                 new Action("Делать физ. упражнения", 0, rub, 10, -15, -5, health, true),
                 new Action("Купить пилюли", -100, rub, 30, -5, -5, health, true),
                 new Action("Приготовить лечебный отвар", -250, rub, 70, -10, -5, health, true),
-                new Action("Не придумал", 0, none, 80, -20, -5, health, false),
+                new Action("Ограбить аптеку", 0, none, 80, -20, -5, health, false),
                 //Energy
                 new Action("Поспать в гараже", 0, none, -5, 15, -5, energy, true),
                 new Action("Найти собутыльников за гаражами",  -100, rub, -5, 35, -5, energy, true),
                 new Action("Купить коньяк", -280, rub, -5, 70, -5, energy, true),
-                new Action("Не придумал", 0, none, -10, 80, -5, energy, false)
+                new Action("Отжать бухло у собутыльников", 0, none, -10, 80, -5, energy, false)
                 );
 
         jobs[3] = new Jobs(
@@ -153,9 +123,58 @@ public class Create implements Constants {
                 new Action("Работать бомбилой", 470, rub, -10, -30, -15, Constants.jobs, true),
                 new Action("Украсть сумочку", 500, rub, -10, -10, -10, Constants.jobs, false)
         );
+
+        locations[3] = new Location(25000,
+                //Food
+                new Action("Сварить мясной бульон", -170, rub, -5, -5, 25, food, true),
+                new Action("Пойти в магаз", -350, rub, -5, -5, 50, food, true),
+                new Action("Заказать пиццу", -600, rub, -5, -5, 80, food, true),
+                new Action("Ограбить ларек", 0, none, -5, -5, 70, food, false),
+                //Med
+                new Action("Купить лекарства", -180, rub, 30, -5, -5, health, true),
+                new Action("Сходить в больницу", -470, rub, 80, -10, -5, health, true),
+                new Action("Знакомый врач", -7, euro, 100, -10, -5, health, true),
+                //Energy
+                new Action("Купить водяры",  -150, rub, -5, 35, -5, energy, true),
+                new Action("Купить коньяк", -400, rub, -5, 50, -5, energy, true),
+                new Action("Купить хорошего вина", 9, euro, -5, 100, -5, energy, true)
+        );
+
+        jobs[4] = new Jobs(
+                new Action("Месить цемент", 300, rub, -5, -10, -5, Constants.jobs, true),
+                new Action("Клеить обои", 550, rub, -5, -25, -5, Constants.jobs, true),
+                new Action("Класть плитку", 650, rub, -5, -30, -10, Constants.jobs, true),
+                new Action("Тырить вещи со стройки", 10, euro, -10, -10, -10, Constants.jobs, false)
+        );
     }
 
-    public interface VipItemListener{
-        void saveSettings();
+    public static void createVipStore(){
+        vipStore = new Vip[]{
+                new Vip("+10 к макс. запасу еды", false, 9) {
+                    @Override
+                    void reward(Player player) {
+                        player.addMaxIndicators(10, food);
+                    }
+                },
+                new Vip("+10 к макс. запасу здоровья", false, 9) {
+                    @Override
+                    void reward(Player player) {
+                        player.addMaxIndicators(10, health);
+                    }
+                },
+                new Vip("+10 к макс. запасу бодрости", false, 9) {
+                    @Override
+                    void reward(Player player) {
+                        player.addMaxIndicators(10, energy);
+                    }
+                },
+                new Vip("Отключить баннер сверху", true, 29) {
+                    @Override
+                    void reward(Player player) {
+                        player.soldVipItems[adFree] = true;
+                        Action.listener.showMassage("Перезапутите игру!");
+                    }
+                }
+        };
     }
 }
