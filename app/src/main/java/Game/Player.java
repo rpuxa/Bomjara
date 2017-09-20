@@ -23,6 +23,7 @@ public class Player implements Constants,Serializable {
     private double energy;
     private double[] maxIndicators = {100,100,100};
     public boolean[] soldVipItems = new boolean[Create.vipStore.length];
+    double efficiency = 1;
     private boolean dead;
     private boolean caught;
 
@@ -48,7 +49,7 @@ public class Player implements Constants,Serializable {
     }
 
     public static Player createPlayer(){
-        return new Player(new Random().nextInt(),0,0,0,0,0,0,100,0,0,1000,75,75,50,false,false);
+        return new Player(new Random().nextInt(),0,0,0,0,0,0,50,0,0,0,75,75,50,false,false);
     }
 
     void addMaxIndicators(double count, int type){
@@ -70,7 +71,7 @@ public class Player implements Constants,Serializable {
     void addRandVipMoney(){
         if (new Random().nextInt(29) == 10){
             vipMoney++;
-            Action.listener.showMassage("Вы нашли !");
+            Action.listener.showMassage("Вы нашли алмаз!");
         }
     }
 
@@ -122,7 +123,7 @@ public class Player implements Constants,Serializable {
 
     public boolean addMoney(long money, int currency, boolean withoutCoefficient){
         if (!withoutCoefficient && money > 0)
-            money *= coefficient(energy, true,Constants.energy);
+            money *= coefficient(energy, true,Constants.energy) * efficiency;
         switch (currency) {
             case bottle:
                 bottles += money;
@@ -250,7 +251,7 @@ public class Player implements Constants,Serializable {
         Random rand = new Random(((long)(id) << 32) | age);
         double[] rates = {bottlesToRubles,rublesToRubles,eurosToRubles,bitcoinsToRubles};
         for (int i = 0; i < rates.length; i++)
-            rates[i] *= 1 + (rand.nextDouble() -.5)/10;
+            rates[i] *= 1 + 3 * (rand.nextDouble() -.5) / 10;
 
         return rates;
     }

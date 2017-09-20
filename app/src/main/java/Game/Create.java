@@ -25,7 +25,7 @@ public class Create implements Constants {
                 new Chain("Сосед по подъезду Василий", 0, 0, 0, 1, -60, bottle),
                 new Chain("Гопник Валера", 2, 0, 0, 1, -300, bottle),
                 new Chain("Бомбила Семён", 3, 0, 0, 2, -1000, rub),
-                new Chain("Прораб Михалыч", 4, 0, 0, 2, 50, euro)
+                new Chain("Прораб Михалыч", 4, 0, 0, 2, 50, euro),
         };
 
         transport = new Chain[]{
@@ -34,13 +34,15 @@ public class Create implements Constants {
                 new Chain("Велосипед", 0, 1, 0, 1, -3000, rub),
                 new Chain("Старая копейка", 0, 1, 0, 1, -10000, rub),
                 new Chain("Девятка", 0, 2, 3, 2, -50000, rub),
+                new Chain("Иномарка", 0, 2, 3, 2, -3300, euro),
         };
 
         houses = new Chain[]{
                 new Chain("Помойка", 0, 0, 0, 0, 0, none),
                 new Chain("Палатка б/у", 0, 0, 0, 0, -1000, rub),
                 new Chain("Гараж улитка", 2, 1, 0, 1, -9000, rub),
-                new Chain("Сарай", 2, 1, 0, 1, -40000, rub)
+                new Chain("Сарай", 2, 1, 0, 1, -40000, rub),
+                new Chain("Своя квартира", 2, 1, 0, 1, -4000, euro),
         };
 
 
@@ -137,7 +139,7 @@ public class Create implements Constants {
                 //Energy
                 new Action("Купить водяры",  -150, rub, -5, 35, -5, energy, true),
                 new Action("Купить коньяк", -400, rub, -5, 50, -5, energy, true),
-                new Action("Купить хорошего вина", 9, euro, -5, 100, -5, energy, true)
+                new Action("Купить хорошего вина", -9, euro, -5, 100, -5, energy, true)
         );
 
         jobs[4] = new Jobs(
@@ -166,6 +168,18 @@ public class Create implements Constants {
                     @Override
                     void reward(Player player) {
                         player.addMaxIndicators(10, energy);
+                    }
+                },
+                new Vip("+10 к макс. запасу бодрости", false, 9) {
+                    @Override
+                    void reward(Player player) {
+                        player.addMaxIndicators(10, energy);
+                    }
+                },
+                new Vip("+10% к эффективноти работы", true, 15) {
+                    @Override
+                    void reward(Player player) {
+                        player.efficiency += .1;
                     }
                 },
                 new Vip("Отключить баннер сверху", true, 29) {

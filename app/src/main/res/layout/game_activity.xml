@@ -1071,7 +1071,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Здесь вы можете купить уникальные товары за особую валюту - вал.  Они могут попадаться, когда вы совершаете какое либо действие. Либо вы можете их получить, посмотрев рекламу (кнопка добавить)." />
+                android:text="Здесь вы можете купить уникальные товары за особую валюту - алмазы.  Они могут попадаться, когда вы совершаете какое либо действие. Либо вы можете их получить, посмотрев рекламу (кнопка добавить)." />
 
             <Space
                 android:layout_width="match_parent"
@@ -1089,7 +1089,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="Vip валюта: "
+                    android:text="Алмазы: "
                     android:textSize="18sp" />
 
                 <TextView

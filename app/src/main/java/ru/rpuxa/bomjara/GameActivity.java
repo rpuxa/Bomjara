@@ -429,6 +429,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 .setNegativeButton("Начать заного", (dialog, id) -> {});
         AlertDialog alert = builder.create();
         alert.show();
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException ignored) {
+        }
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
             if (sure[0]) {
                 Player.currentPlayer = Player.createPlayer();
@@ -450,9 +454,9 @@ public class GameActivity extends AppCompatActivity implements Constants,
                         }
                     }
                     alert.dismiss();
-                    Player.currentPlayer.setHealth(50);
-                    updateInfo(Player.currentPlayer);
                 }).start();
+                Player.currentPlayer.setHealth(100);
+                updateInfo(Player.currentPlayer);
             }
         });
     }
@@ -481,16 +485,21 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
         AlertDialog alert = builder.create();
         alert.show();
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException ignored) {
+        }
         Button button = alert.getButton(AlertDialog.BUTTON_NEGATIVE);
         button.setOnClickListener(v -> {
             if (!Player.currentPlayer.addMoney(-money, rub, true)) {
                 translate(true, 0, new int[]{euro, rub});
                 if (!Player.currentPlayer.addMoney(-money, rub, true)) {
                     translate(true, 0, new int[]{bitcoin, rub});
-                    if (!Player.currentPlayer.addMoney(-money, rub, true))
+                    if (!Player.currentPlayer.addMoney(-money, rub, true)) {
                         Player.currentPlayer.setMoney(0, rub);
-
+                    }
                 }
+                showMassage("Для выплаты штрафа, все средства\nбыли переведены в рубли");
             }
             alert.dismiss();
             updateInfo(Player.currentPlayer);
@@ -552,7 +561,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         int num = 0;
         for (Vip vip : Create.vipStore){
             Button item = new Button(this);
-            String text = vip.getName()+ " " + ((vip.isNotInfinity() && player.soldVipItems[num]) ? "(Продано)" : (vip.getCost() + " вал."));
+            String text = vip.getName()+ " " + ((vip.isNotInfinity() && player.soldVipItems[num]) ? "(Продано)" : (vip.getCost() + " алм."));
             item.setText(text);
             item.setOnClickListener(vip);
             if (vip.isNotInfinity())
@@ -563,7 +572,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     private RewardedVideoAd vipBanner;
 
-    private void loadVipBanner(){
+    private void loadVipBanner() {
         vipBanner = MobileAds.getRewardedVideoAdInstance(this);
         vipBanner.loadAd("ca-app-pub-9182384050264940/9188603588", adRequest);
     }
