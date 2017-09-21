@@ -17,7 +17,8 @@ public class Create implements Constants {
                 new Chain("Помойка на окраине", 0, 0, 0, 0, 0, none),
                 new Chain("Подъезд", 1, 1, 0, 0, 0, none),
                 new Chain("Жилой район", 2, 2, 1, 1, 0, none),
-                new Chain("Дача", 3, 3, 3, 0, 0, none)
+                new Chain("Дача", 3, 3, 3, 0, 0, none),
+                new Chain("Квартира в микрорайоне", 4, 4, 4, 0, 0, none),
         };
 
         friends = new Chain[]{
@@ -26,6 +27,7 @@ public class Create implements Constants {
                 new Chain("Гопник Валера", 2, 0, 0, 1, -300, bottle),
                 new Chain("Бомбила Семён", 3, 0, 0, 2, -1000, rub),
                 new Chain("Прораб Михалыч", 4, 0, 0, 2, 50, euro),
+                new Chain("Программист Слава", 4, 4, 0, 4, 200, euro),
         };
 
         transport = new Chain[]{
@@ -34,7 +36,8 @@ public class Create implements Constants {
                 new Chain("Велосипед", 0, 1, 0, 1, -3000, rub),
                 new Chain("Старая копейка", 0, 1, 0, 1, -10000, rub),
                 new Chain("Девятка", 0, 2, 3, 2, -50000, rub),
-                new Chain("Иномарка", 0, 2, 3, 2, -3300, euro),
+                new Chain("Старая Иномарка", 0, 2, 3, 2, -3300, euro),
+                new Chain("Иномарка среднего класса", 0, 2, 3, 2, -8000, euro),
         };
 
         houses = new Chain[]{
@@ -42,7 +45,8 @@ public class Create implements Constants {
                 new Chain("Палатка б/у", 0, 0, 0, 0, -1000, rub),
                 new Chain("Гараж улитка", 2, 1, 0, 1, -9000, rub),
                 new Chain("Сарай", 2, 1, 0, 1, -40000, rub),
-                new Chain("Своя квартира", 2, 1, 0, 1, -4000, euro),
+                new Chain("Однушка", 2, 1, 0, 1, -4000, euro),
+                new Chain("Двухкомнатная в центре города", 2, 1, 0, 1, -9000, euro),
         };
 
 
@@ -148,6 +152,28 @@ public class Create implements Constants {
                 new Action("Класть плитку", 650, rub, -5, -30, -10, Constants.jobs, true),
                 new Action("Тырить вещи со стройки", 10, euro, -10, -10, -10, Constants.jobs, false)
         );
+
+        locations[3] = new Location(50000,
+                //Food
+                new Action("Пойти в ашан", -350, rub, -5, -5, 30, food, true),
+                new Action("Заказать пиццу", -600, rub, -5, -5, 50, food, true),
+                new Action("Пойти в ресторан", -15, euro, -5, -5, 80, food, true),
+                //Med
+                new Action("Гос больница", -500, rub, 40, -10, -5, health, true),
+                new Action("Знакомый врач", -7, euro, 40, -10, -5, health, true),
+                new Action("Частная больница", -15, euro, 80, -5, -5, health, true),
+                //Energy
+                new Action("Купить абсент",  -400, rub, -5, 35, -5, energy, true),
+                new Action("Купить коньяк", -10, euro, -5, 50, -5, energy, true),
+                new Action("Купить дорогой виски", -15, euro, -5, 100, -5, energy, true)
+        );
+
+        jobs[5] = new Jobs(
+                new Action("Работать в колл-центре", 600, rub, -5, -10, -5, Constants.jobs, true),
+                new Action("Работать в службе поддержки", 10, euro, -5, -15, -5, Constants.jobs, true),
+                new Action("Кодить", 15, rub, -10, -20, -15, Constants.jobs, true),
+                new Action("Написать вирус", 1, bitcoin, -15, -30, -30, Constants.jobs, false)
+        );
     }
 
     public static void createVipStore(){
@@ -176,7 +202,7 @@ public class Create implements Constants {
                         player.addMaxIndicators(10, energy);
                     }
                 },
-                new Vip("+10% к эффективноти работы", true, 15) {
+                new Vip("+10% к эффективности работы", true, 15) {
                     @Override
                     void reward(Player player) {
                         player.efficiency += .1;
