@@ -6,15 +6,17 @@ public class Chain {
     private int houseNeeded;
     private int friendNeeded;
     private int locationNeeded;
+    private int studyNeeded;
     private int moneyAdd;
     private int currency;
 
-    public Chain(String name, int transportNeeded, int houseNeeded, int friendNeeded, int locationNeeded, int moneyAdd, int currency) {
+    Chain(String name, int transportNeeded, int houseNeeded, int friendNeeded, int locationNeeded, int studyNeeded, int moneyAdd, int currency) {
         this.name = name;
         this.transportNeeded = transportNeeded;
         this.houseNeeded = houseNeeded;
         this.friendNeeded = friendNeeded;
         this.locationNeeded = locationNeeded;
+        this.studyNeeded = studyNeeded;
         this.moneyAdd = moneyAdd;
         this.currency = currency;
     }
@@ -30,13 +32,15 @@ public class Chain {
     public void open(int id) {
         Player player = Player.currentPlayer;
         if (transportNeeded > player.transport)
-            Action.listener.showMassage("Требуется транспорт: " + Create.transport[transportNeeded].getName());
+            Action.listener.showMassage("Требуется транспорт: " + Create.transports[transportNeeded].getName());
         else if (houseNeeded > player.house)
             Action.listener.showMassage("Требуется дом: " + Create.houses[houseNeeded].getName());
         else if (friendNeeded > player.friend)
             Action.listener.showMassage("Требуется кореш: " + Create.friends[friendNeeded].getName());
         else if (locationNeeded > player.location)
-            Action.listener.showMassage("Требуется локация: " + Create.locationChain[locationNeeded].getName());
+            Action.listener.showMassage("Требуется локация: " + Create.locationChains[locationNeeded].getName());
+        else if (studyNeeded != -1 && player.learning[studyNeeded] != Create.study[studyNeeded].getLength())
+            Action.listener.showMassage("Требуется выучить: " + Create.study[studyNeeded].getName());
         else if (!player.addMoney(moneyAdd, currency,true))
             Action.listener.showMassage("Не хватает средств!");
         else {

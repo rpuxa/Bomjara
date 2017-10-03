@@ -18,8 +18,8 @@ android {
         applicationId "ru.rpuxa.bomjara"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.2.1"
+        versionCode 7
+        versionName "1.5.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

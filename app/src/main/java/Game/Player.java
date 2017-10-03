@@ -5,10 +5,12 @@ import java.util.Random;
 
 public class Player implements Constants,Serializable {
 
+    private static final long serialVersionUID = 1001L;
+
     public static Player currentPlayer = createPlayer();
 
     private int id;
-    private int age;
+    public int age;
     public int location;
     public int transport;
     public int house;
@@ -21,8 +23,9 @@ public class Player implements Constants,Serializable {
     private double food;
     private double health;
     private double energy;
-    private double[] maxIndicators = {100,100,100};
+    public double[] maxIndicators = {100,100,100};
     public boolean[] soldVipItems = new boolean[Create.vipStore.length];
+    public int[] learning = new int[Create.study.length];
     double efficiency = 1;
     private boolean dead;
     private boolean caught;
@@ -48,8 +51,8 @@ public class Player implements Constants,Serializable {
         this.caught = caught;
     }
 
-    public static Player createPlayer(){
-        return new Player(new Random().nextInt(),0,0,0,0,0,0,50,0,0,0,75,75,50,false,false);
+    public static Player createPlayer() {
+        return new Player(new Random().nextInt(), 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 75, 75, 50, false, false);
     }
 
     void addMaxIndicators(double count, int type){
@@ -203,11 +206,11 @@ public class Player implements Constants,Serializable {
     }
 
     public String getLocation() {
-        return Create.locationChain[location].getName();
+        return Create.locationChains[location].getName();
     }
 
     public String getTransport() {
-        return Create.transport[transport].getName();
+        return Create.transports[transport].getName();
     }
 
     public String getHouse() {

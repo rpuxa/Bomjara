@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -16,14 +17,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import Game.Create;
 import Game.Player;
 import Game.Settings;
 
-public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
+public class MenuActivity extends AppCompatActivity implements SaveAndLoad, GameActivity.SaveSettings {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        GameActivity.saveSettings = this;
         GameActivity.saveAndLoad = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
@@ -93,6 +95,7 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
     private static final int PLAYER = 0;
     private static final int SETTINGS = 1;
 
+
     public boolean save(int type){
         String name = "";
         if (type == PLAYER) {
@@ -112,6 +115,7 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
         }
     }
 
+
     public boolean load(int type){
         String name = "";
         if (type == PLAYER) {
@@ -129,4 +133,10 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad {
             return false;
         }
     }
+
+    @Override
+    public void saveSettings() {
+        save(SETTINGS);
+    }
+
 }

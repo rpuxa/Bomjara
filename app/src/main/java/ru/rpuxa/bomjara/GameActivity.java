@@ -1,19 +1,24 @@
 package ru.rpuxa.bomjara;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,22 +40,34 @@ import Game.Create;
 import Game.Location;
 import Game.Player;
 import Game.Settings;
+import Game.Study;
 import Game.Vip;
 
-import static Game.Create.*;
+import static Game.Create.createStudy;
+import static Game.Create.createVipStore;
+import static Game.Create.friends;
+import static Game.Create.houses;
+import static Game.Create.locationChains;
+import static Game.Create.locations;
+import static Game.Create.transports;
 
 public class GameActivity extends AppCompatActivity implements Constants,
-        Action.ActionListener,Player.PlayerListener, Vip.VipListener {
+        Action.ActionListener,Player.PlayerListener, Vip.VipListener,
+        Study.StudyListener {
 
+    private static final String LINK_ON_GOOGLE_PLAY = "https://play.google.com/store/apps/details?id=ru.rpuxa.bomjara";
     public static SaveAndLoad saveAndLoad;
     public static Settings settings;
+    public static GameActivity.SaveSettings saveSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         createVipStore();
+        createStudy();
         Action.listener = this;
         Player.listener = this;
         Vip.listener = this;
+        Study.listener = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_activity);
         updateInfo(Player.currentPlayer);
@@ -68,6 +85,109 @@ public class GameActivity extends AppCompatActivity implements Constants,
             caughtByPolice();
         if (Player.currentPlayer.isDead())
             dead();
+        if (Player.currentPlayer.age == 0)
+            showPrologueMenu();
+        showStudy();
+        if (Player.currentPlayer.age > 100 && settings.isShowAppRate())
+            showRateApplication();
+    }
+
+    private void showRateApplication(){
+        Dialog dialog = new Dialog(GameActivity.this);
+        dialog.setTitle("Оцените приложение");
+        dialog.setContentView(R.layout.rate);
+        dialog.show();
+        ((RatingBar) dialog.findViewById(R.id.ratingBar)).setOnRatingBarChangeListener((v1,v2,v3) -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(LINK_ON_GOOGLE_PLAY));
+            startActivity(browserIntent);
+            settings.setShowAppRate(false);
+            dialog.dismiss();
+            saveSettings.saveSettings();
+        });
+        dialog.findViewById(R.id.later).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.never).setOnClickListener(v -> {
+            settings.setShowAppRate(false);
+            dialog.dismiss();
+            saveSettings.saveSettings();
+        });
+
+    }
+
+    Dialog prologueDialog;
+
+    private void showPrologueMenu() {
+        prologueDialog = new Dialog(GameActivity.this);
+        prologueDialog.setTitle("Предыстория");
+        prologueDialog.setContentView(R.layout.prologue);
+        prologueDialog.show();
+    }
+
+    private static int prologueChosen = 0;
+
+    public void startGameClickListener(View view){
+        prologueDialog.dismiss();
+        Player player = Player.createPlayer();
+        switch (prologueChosen){
+            case FIRST_PROLOGUE:
+                player.setMoney(1000,rub);
+                break;
+            case SECOND_PROLOGUE:
+                player.maxIndicators[1] = 120;
+                break;
+
+            case THIRD_PROLOGUE:
+                player.learning[0] = 10;
+                player.transport = 1;
+                break;
+        }
+        player.age = 1;
+        Player.currentPlayer = player;
+        updateActions(player);
+        updateChains(player);
+        updateInfo(player);
+        showStudy();
+    }
+
+    public void firstPrologueButtonClickListener(View view){
+        showPrologueN(FIRST_PROLOGUE,view);
+        prologueChosen = FIRST_PROLOGUE;
+    }
+    public void secondPrologueButtonClickListener(View view){
+        showPrologueN(SECOND_PROLOGUE,view );
+        prologueChosen = SECOND_PROLOGUE;
+    }
+    public void thirdPrologueButtonClickListener(View view){
+        showPrologueN(THIRD_PROLOGUE, view);
+        prologueChosen = THIRD_PROLOGUE;
+    }
+
+    private static final int FIRST_PROLOGUE = 0;
+    private static final int SECOND_PROLOGUE = 1;
+    private static final int THIRD_PROLOGUE = 2;
+
+    private void showPrologueN(int prologueIndex, View button) {
+        @IdRes
+        final int[] idsButtons = {
+                R.id.firstPrologueButton,R.id.secondPrologueButton,
+                R.id.thirdPrologueButton
+        };
+
+        @IdRes
+                final int[] idsPrologues = {
+                R.id.prologue0, R.id.prologue1, R.id.prologue2
+        };
+
+        LinearLayout.LayoutParams weight1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,1);
+        LinearLayout.LayoutParams weight5 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,5);
+
+
+        for (int id : idsButtons)
+            prologueDialog.findViewById(id).setLayoutParams(weight1);
+        button.setLayoutParams(weight5);
+
+        for (int id : idsPrologues)
+            prologueDialog.findViewById(id).setVisibility(View.GONE);
+        prologueDialog.findViewById(idsPrologues[prologueIndex]).setVisibility(View.VISIBLE);
     }
 
     private AdView banner0;
@@ -149,7 +269,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         @IdRes
         int[] tips = {R.id.tipEnergy,R.id.tipFood,R.id.tipFriend,R.id.tipHeath,
                 R.id.tipHouse,R.id.tipJob,R.id.tipLoc,R.id.tipRate,R.id.tipTransport,
-                R.id.tipVip};
+                R.id.tipVip,R.id.tipStudy};
         for (int id : tips)
             findViewById(id).setVisibility(visible);
     }
@@ -201,6 +321,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         findViewById(R.id.infoToMenu).setOnClickListener(view -> backToMenu());
         findViewById(R.id.quitButton).setOnClickListener(view -> backToMenu());
         findViewById(R.id.vipButton).setOnClickListener(view -> showMenu(R.id.vipMenu));
+        findViewById(R.id.studyButton).setOnClickListener(view -> showMenu(R.id.studyMenu));
         findViewById(R.id.vipAdd).setOnClickListener(view -> showVipBanner());
     }
 
@@ -311,10 +432,10 @@ public class GameActivity extends AppCompatActivity implements Constants,
     public void updateActions(Player player) {
         ArrayList<Button>[][] menuButtons = new ArrayList[countMenus][2];
         final int legal = 0, illegal = 1;
-        for (ArrayList<Button>[] b : menuButtons){
-            b[0] = new ArrayList<>();
-            b[1] = new ArrayList<>();
-        }
+        for (ArrayList<Button>[] b : menuButtons)
+            for (int i = 0; i < 2; i++)
+                b[i] = new ArrayList<>();
+
         Location location = Create.locations[player.location];
 
         for (Action action : concatArray(location.getActions(),Create.jobs[player.friend].getActions())) {
@@ -342,7 +463,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     @Override
     public void updateChains(Player player){
-        Chain[][] chains = {locationChain,friends,houses,transport};
+        Chain[][] chains = {locationChains,friends,houses, transports};
         int[] progress = {player.location,player.friend,player.house,player.transport};
         @IdRes
         int[] currentsIds = {R.id.currentLocation,R.id.currentFriend,R.id.currentHouse,R.id.currentTransport};
@@ -379,7 +500,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
     private final int[] menus = {
             R.id.infoMenu, R.id.locFriendMenu,R.id.houseTransportMenu,
             R.id.foodMenu,R.id.healthMenu,R.id.energyMenu,R.id.jobMenu,
-            R.id.rateMenu,R.id.vipMenu
+            R.id.rateMenu,R.id.vipMenu,R.id.studyMenu
     };
 
     void showMenu(@IdRes int id) {
@@ -502,6 +623,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 showMassage("Для выплаты штрафа, все средства\nбыли переведены в рубли");
             }
             alert.dismiss();
+            Player.currentPlayer.setCaught(false);
             updateInfo(Player.currentPlayer);
         });
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
@@ -547,7 +669,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         super.onDestroy();
     }
 
-    private boolean checkNetworkConnection(){
+    private boolean checkNetworkConnection() {
         ConnectivityManager cm =
                 (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -627,6 +749,72 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 showMassage("Ошибка загрузки. Попробуйте чуть позже");
             loadVipBanner();
         }
+    }
+
+    @Override
+    public void showStudy() {
+        LinearLayout list = findViewById(R.id.studyList);
+        list.removeAllViews();
+        Player player = Player.currentPlayer;
+        Study[] study = Create.study;
+        for (int i = 0; i < study.length; i++) {
+            if (player.learning[i] == 0){
+                String text = "Обучится: " + study[i].getName() + " -" + Action.moneyToStr(study[i].getCost(),study[i].getCurrency());
+                Button button = new Button(this);
+                button.setText(text);
+                button.setOnClickListener(study[i]);
+                list.addView(button);
+            } else if (player.learning[i] == study[i].getLength()){
+                Button button = new Button(this);
+                String text = study[i].getName() + " (Изучено)";
+                button.setText(text);
+                list.addView(button);
+            } else {
+                TextView name = new TextView(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT,1);
+                lp.gravity = Gravity.CENTER;
+                name.setLayoutParams(lp);
+                name.setText(study[i].getName());
+                list.addView(name);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,0);
+                LinearLayout column = new LinearLayout(this);
+                column.setOrientation(LinearLayout.HORIZONTAL);
+                ProgressBar bar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+                lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,1);
+                lp.gravity = Gravity.CENTER;
+                bar.setLayoutParams(lp);
+                bar.setMax(study[i].getLength());
+                bar.setProgress(player.learning[i]);
+                column.addView(bar);
+
+                TextView textView = new TextView(this);
+                textView.setText(String.valueOf(player.learning[i]));
+                textView.setLayoutParams(params);
+                column.addView(textView);
+
+                textView = new TextView(this);
+                textView.setText("/");
+                textView.setLayoutParams(params);
+                column.addView(textView);
+
+                textView = new TextView(this);
+                textView.setText(String.valueOf(study[i].getLength()));
+                textView.setLayoutParams(params);
+                column.addView(textView);
+
+                Button button = new Button(this);
+                String text = "Изучать";
+                button.setText(text);
+                button.setLayoutParams(params);
+                button.setOnClickListener(study[i]);
+                column.addView(button);
+                list.addView(column);
+            }
+        }
+    }
+
+    public interface SaveSettings{
+        void saveSettings();
     }
 }
 

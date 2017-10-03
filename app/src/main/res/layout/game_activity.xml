@@ -94,6 +94,15 @@
                     app:srcCompat="@drawable/job" />
 
                 <ImageButton
+                    android:id="@+id/studyButton"
+                    style="@android:style/Widget.ImageButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    ads:srcCompat="@drawable/study" />
+
+                <ImageButton
                     android:id="@+id/vipButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
@@ -119,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/infoList"
@@ -1120,6 +1129,51 @@
 
             <LinearLayout
                 android:id="@+id/vipList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/studyMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tipStudy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Здесь вы можете проходить разные курсы, чтобы открыть корешей, транспорт и т.п. Будте внимательнее, учеба отнимает еду, здоровье и еду!" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Учёба"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:id="@+id/studyList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
