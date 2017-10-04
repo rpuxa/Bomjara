@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Google Play game services IDs.
+Save this file as res/values/games-ids.xml in your project.
+-->
+<resources>
+    <string name="app_id">310266082735</string>
+    <string name="achievement_take_10_levels">HgkIr62KmoQJEAIQBg</string>
+    <string name="achievement_take_30_levels">HgkIr62KmoQJEAIQBw</string>
+    <string name="achievement_take_50_levels">HgkIr62KmoQJEAIQCA</string>
+    <string name="achievement_take_70_levels">HgkIr62KmoQJEAIQCg</string>
+    <string name="achievement_take_100_levels">HgkIr62KmoQJEAIQCQ</string>
+    <string name="achievement_beginner_cutter">HgkIr62KmoQJEAIQDw</string>
+    <string name="achievement_advanced_cutter">HgkIr62KmoQJEAIQEA</string>
+    <string name="achievement_master_cutter">HgkIr62KmoQJEAIQEQ</string>
+    <string name="achievement_lucky">HgkIr62KmoQJEAIQEg</string>
+    <string name="achievement_cheerful">HgkIr62KmoQJEAIQEw</string>
+    <string name="achievement_exceptional_joyous">HgkIr62KmoQJEAIQFA</string>
+    <string name="achievement_thrust">HgkIr62KmoQJEAIQFQ</string>
+    <string name="achievement_very_persistent">HgkIr62KmoQJEAIQFg</string>
+    <string name="achievement_the_most_resistant">HgkIr62KmoQJEAIQFw</string>
+    <string name="achievement_1_000_000">HgkIr62KmoQJEAIQGA</string>
+    <string name="achievement_2_000_000">HgkIr62KmoQJEAIQGQ</string>
+    <string name="achievement_3_000_000">HgkIr62KmoQJEAIQGg</string>
+    <string name="achievement_unlucky">HgkIr62KmoQJEAIQGw</string>
+    <string name="achievement_loyal">HgkIr62KmoQJEAIQHA</string>
+    <string name="achievement_fan">HgkIr62KmoQJEAIQHQ</string>
+    <string name="achievement_leader_of_mars">HgkIr62KmoQJEAIQHg</string>
+    <string name="achievement_leader_of_neptune">HgkIr62KmoQJEAIQHw</string>
+    <string name="achievement_unhurried">HgkIr62KmoQJEAIQIA</string>
+    <string name="achievement_final_push">HgkIr62KmoQJEAIQIQ</string>
+    <string name="leaderboard_leaderboard">HgkIr62KmoQJEAIQAQ</string>
+    <string name="leaderboard_pack_1">HgkIr62KmoQJEAIQCw</string>
+    <string name="leaderboard_pack_2">HgkIr62KmoQJEAIQDA</string>
+</resources>

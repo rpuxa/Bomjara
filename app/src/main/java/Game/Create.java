@@ -72,13 +72,13 @@ public class Create implements Constants {
                 new Action("Поспать", 0, none, -5, 15, -5, energy, true),
                 new Action("Выпить палёнки", -45, rub, -5, 30, -5, energy, true),
                 new Action("Купить пивас", -60, rub, 0, 30, -5, energy, true),
-                new Action("Украсть РедБулл", 0, none, -10, 60, -5, energy, false)
+                new Action("Украсть Редбулл", 0, none, -10, 60, -5, energy, false)
         );
 
         jobs[0] = new Jobs(
                 new Action("Пособирать бутылки", 25, bottle, -10, -20, -10, Constants.jobs, true),
                 new Action("Пособирать монеты", 60, rub, -10, -20, -10, Constants.jobs, true),
-                new Action("Украть бабки у уличных музыкантов", 100, rub, -15, -30, -15, Constants.jobs, false)
+                new Action("Украсть бабки у уличных музыкантов", 100, rub, -15, -30, -15, Constants.jobs, false)
         );
 
         locations[1] = new Location(3000,
@@ -96,19 +96,19 @@ public class Create implements Constants {
                 new Action("Поспать в палатке", 0, none, -5, 15, -5, energy, true),
                 new Action("Бухнуть с гопниками", -50, rub, -5, 35, -5, energy, true),
                 new Action("Купить палёный абсент", -150, rub, -5, 70, -5, energy, true),
-                new Action("Украсть РедБулл", 0, none, -10, 50, -5, energy, false)
+                new Action("Украсть Редбулл", 0, none, -10, 50, -5, energy, false)
         );
 
         jobs[1] = new Jobs(
                 new Action("Пойти с Василием за бутылками", 45, bottle, -5, -20, -10, Constants.jobs, true),
-                new Action("Пособирать монеты из фантана", 120, rub, -10, -20, -10, Constants.jobs, true),
+                new Action("Пособирать монеты из фонтана", 120, rub, -10, -20, -10, Constants.jobs, true),
                 new Action("Собирать макулатуру на свалках", 190, rub, -5, -40, -20, Constants.jobs, true),
                 new Action("Сдать люк на металл", 200, rub, -5, -20, -5, Constants.jobs, false)
         );
 
         jobs[2] = new Jobs(
-                new Action("Пособирать монеты из фантана", 120, rub, -5, -20, -10, Constants.jobs, true),
-                new Action("Рассклеивать листовки с Валерой", 250, rub, -10, -30, -20, Constants.jobs, true),
+                new Action("Пособирать монеты из фонтана", 120, rub, -5, -20, -10, Constants.jobs, true),
+                new Action("Расклеивать листовки с Валерой", 250, rub, -10, -30, -20, Constants.jobs, true),
                 new Action("Стырить магнитолу", 300, rub, -10, -35, -20, Constants.jobs, false),
                 new Action("Отжать мобилку", 350, rub, -10, -45, -15, Constants.jobs, false)
         );
@@ -117,7 +117,7 @@ public class Create implements Constants {
                 //Food
                 new Action("Сварить гречку", -80, rub, -5, -5, 25, food, true),
                 new Action("Сделать похлебку", -270, rub, -5, -5, 50, food, true),
-                new Action("Купить птицу грилль", -450, rub, -5, -5, 80, food, true),
+                new Action("Купить птицу гриль", -450, rub, -5, -5, 80, food, true),
                 new Action("Отнять еду у доставщика пиццы", 0, none, -5, -5, 70, food, false),
                 //Med
                 new Action("Делать физ. упражнения", 0, rub, 10, -15, -5, health, true),
@@ -163,7 +163,7 @@ public class Create implements Constants {
 
         locations[4] = new Location(50000,
                 //Food
-                new Action("Пойти в ашан", -350, rub, -5, -5, 30, food, true),
+                new Action("Пойти в Ашан", -350, rub, -5, -5, 30, food, true),
                 new Action("Заказать пиццу", -600, rub, -5, -5, 50, food, true),
                 new Action("Пойти в ресторан", -15, euro, -5, -5, 80, food, true),
                 //Med
@@ -191,7 +191,7 @@ public class Create implements Constants {
                 new Action("Пойти в ресторан", -20, euro, -5, -5, 80, food, true),
                 //Med
                 new Action("Вызвать врача", -800, rub, 25, -10, -5, health, true),
-                new Action("Купить иностраные таблетки", -12, euro, 40, -10, -5, health, true),
+                new Action("Купить иностранные таблетки", -12, euro, 40, -10, -5, health, true),
                 new Action("Частная клиника", -25, euro, 80, -5, -5, health, true),
                 //Energy
                 new Action("Сходить в спортзал", -700, rub, -5, 35, -5, energy, true),
@@ -203,7 +203,7 @@ public class Create implements Constants {
                 new Action("Зарабатывать на бинарных опционах", 1000, rub, -5, -10, -5, Constants.jobs, true),
                 new Action("Управление капиталом", 17, euro, -5, -15, -5, Constants.jobs, true),
                 new Action("Продажа акций", 35, euro, -10, -200, -15, Constants.jobs, true),
-                new Action("Мохинации с курсами валют", 2, bitcoin, -15, -30, -30, Constants.jobs, false)
+                new Action("Махинации с курсами валют", 2, bitcoin, -15, -30, -30, Constants.jobs, false)
         );
 
         locations[6] = new Location(350000,
@@ -265,7 +265,7 @@ public class Create implements Constants {
                     @Override
                     void reward(Player player) {
                         player.soldVipItems[adFree] = true;
-                        Action.listener.showMassage("Перезапутите игру!");
+                        Action.listener.showMassage("Перезапустите игру!");
                     }
                 }
         };

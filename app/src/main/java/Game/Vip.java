@@ -2,7 +2,7 @@ package Game;
 
 import android.view.View;
 
-public abstract class Vip implements View.OnClickListener {
+public abstract class Vip implements View.OnClickListener,Constants {
 
     private String name;
     private boolean sold;
@@ -20,7 +20,7 @@ public abstract class Vip implements View.OnClickListener {
         if (!sold) {
             Player player = Player.currentPlayer;
             if (player.getVipMoney() < cost)
-                Action.listener.showMassage("Не хватает средств!");
+                Action.listener.showMassage(noMoney);
             else {
                 player.addVipMoney(-cost);
                 if (notInfinity)
@@ -30,18 +30,10 @@ public abstract class Vip implements View.OnClickListener {
                 Action.listener.updateInfo(player);
             }
         } else
-            Action.listener.showMassage("Уже продано!");
+            Action.listener.showMassage(alreadySold);
     }
 
     abstract void reward(Player player);
-
-    public boolean isSold() {
-        return sold;
-    }
-
-    public void setSold(boolean sold) {
-        this.sold = sold;
-    }
 
     public boolean isNotInfinity() {
         return notInfinity;

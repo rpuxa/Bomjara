@@ -14,7 +14,7 @@ public class Action implements Constants, View.OnClickListener{
     private int menu;
     private boolean legal;
 
-    public Action(String name, long moneyAdd, int currency, double healthAdd, double energyAdd, double foodAdd, int menu, boolean legal) {
+    Action(String name, long moneyAdd, int currency, double healthAdd, double energyAdd, double foodAdd, int menu, boolean legal) {
         this.name = name;
         this.moneyAdd = moneyAdd;
         this.currency = currency;
@@ -32,13 +32,13 @@ public class Action implements Constants, View.OnClickListener{
     public static String moneyToStr(long money, int currency){
         String moneySt = String.valueOf(money);
         if (currency == rub)
-            moneySt += "р.";
+            moneySt += rublesSt;
         else if (currency == euro)
-            moneySt += "€";
+            moneySt += euroSt;
         else if (currency == bitcoin)
-            moneySt += "bit.";
+            moneySt += bitcoinsSt;
         else if (currency == bottle)
-            moneySt += "бут.";
+            moneySt += bottlesSt;
         else
             moneySt = "";
         return moneySt;
@@ -48,12 +48,12 @@ public class Action implements Constants, View.OnClickListener{
     public void onClick(View view) {
         Player player = Player.currentPlayer;
         if (!player.addMoney(moneyAdd,currency,false)) {
-            listener.showMassage("Не хватает средств!");
+            listener.showMassage(noMoney);
         } else if (legal || illegalAction()) {
             long energy = player.addEnergy(energyAdd);
             long food = player.addFood(foodAdd);
             long health = player.addHealth(healthAdd);
-            listener.showMassage(addToStr(food,"Еда",true) + addToStr(health,"Здоровье",false) + addToStr(energy,"Бодрость",false),true);
+            listener.showMassage(addToStr(food,foodSt,true) + addToStr(health,healthSt,false) + addToStr(energy,energySt,false),true);
             player.addAge();
             player.checkHealth();
             if (energy != 0 || food != 0 || health !=0)

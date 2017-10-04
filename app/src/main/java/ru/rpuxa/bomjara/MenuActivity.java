@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import Game.Constants;
 import Game.Player;
 import Game.Settings;
 
-public class MenuActivity extends AppCompatActivity implements SaveAndLoad, GameActivity.SaveSettings {
+public class MenuActivity extends AppCompatActivity implements SaveAndLoad, GameActivity.SaveSettings, Constants {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +34,21 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad, Game
             if (GameActivity.saveAndLoad.load())
                 startGame();
             else
-                showMassage("Игра не найдена! (повреждена или удалена)");
+                showMassage(gameNotFound);
         });
         findViewById(R.id.newGame).setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Новая игра")
-                    .setMessage("Вы точно хотите начать новую игру?")
+            builder.setTitle(newGame)
+                    .setMessage(sureNewGame)
                     .setIcon(R.drawable.location)
                     .setCancelable(false)
-                    .setPositiveButton("Да", (dialog, id) -> {
+                    .setPositiveButton(yes, (dialog, id) -> {
                         dialog.cancel();
                         Player.currentPlayer = Player.createPlayer();
                         GameActivity.saveAndLoad.save();
                         startGame();
                     })
-                    .setNegativeButton("Нет", (dialog, id) -> dialog.cancel());
+                    .setNegativeButton(no, (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
         });

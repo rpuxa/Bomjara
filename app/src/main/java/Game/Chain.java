@@ -1,6 +1,6 @@
 package Game;
 
-public class Chain {
+public class Chain implements Constants {
     private String name;
     private int transportNeeded;
     private int houseNeeded;
@@ -32,17 +32,17 @@ public class Chain {
     public void open(int id) {
         Player player = Player.currentPlayer;
         if (transportNeeded > player.transport)
-            Action.listener.showMassage("Требуется транспорт: " + Create.transports[transportNeeded].getName());
+            Action.listener.showMassage(transportNeededSt + Create.transports[transportNeeded].getName());
         else if (houseNeeded > player.house)
-            Action.listener.showMassage("Требуется дом: " + Create.houses[houseNeeded].getName());
+            Action.listener.showMassage(houseNeededSt + Create.houses[houseNeeded].getName());
         else if (friendNeeded > player.friend)
-            Action.listener.showMassage("Требуется кореш: " + Create.friends[friendNeeded].getName());
+            Action.listener.showMassage(friendNeededSt + Create.friends[friendNeeded].getName());
         else if (locationNeeded > player.location)
-            Action.listener.showMassage("Требуется локация: " + Create.locationChains[locationNeeded].getName());
+            Action.listener.showMassage(locationNeededSt + Create.locationChains[locationNeeded].getName());
         else if (studyNeeded != -1 && player.learning[studyNeeded] != Create.study[studyNeeded].getLength())
-            Action.listener.showMassage("Требуется выучить: " + Create.study[studyNeeded].getName());
+            Action.listener.showMassage(studyNeededSt + Create.study[studyNeeded].getName());
         else if (!player.addMoney(moneyAdd, currency,true))
-            Action.listener.showMassage("Не хватает средств!");
+            Action.listener.showMassage(noMoney);
         else {
             if (id == 0)
                 player.location++;

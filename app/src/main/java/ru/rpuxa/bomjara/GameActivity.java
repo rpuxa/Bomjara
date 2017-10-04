@@ -32,6 +32,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import Game.Action;
 import Game.Chain;
@@ -94,7 +95,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     private void showRateApplication(){
         Dialog dialog = new Dialog(GameActivity.this);
-        dialog.setTitle("Оцените приложение");
+        dialog.setTitle(rateApp);
         dialog.setContentView(R.layout.rate);
         dialog.show();
         ((RatingBar) dialog.findViewById(R.id.ratingBar)).setOnRatingBarChangeListener((v1,v2,v3) -> {
@@ -117,7 +118,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     private void showPrologueMenu() {
         prologueDialog = new Dialog(GameActivity.this);
-        prologueDialog.setTitle("Предыстория");
+        prologueDialog.setTitle(prologueSt);
         prologueDialog.setContentView(R.layout.prologue);
         prologueDialog.show();
     }
@@ -195,10 +196,9 @@ public class GameActivity extends AppCompatActivity implements Constants,
     private AdRequest adRequest = new AdRequest.Builder().build();
 
     private void showBanner0(){
-        MobileAds.initialize(getApplicationContext(),"ca-app-pub-9182384050264940~9510444896");
+        MobileAds.initialize(getApplicationContext(), appId);
         banner0 = findViewById(R.id.adBanner0);
         AdRequest adRequest = new AdRequest.Builder().build();
-        //"BF018E25FF993B133560D7A0B867333E"
         banner0.setAdListener(new AdListener(){
             @Override
             public void onAdOpened() {
@@ -213,12 +213,12 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     private void loadBanner1(){
         banner1 = MobileAds.getRewardedVideoAdInstance(this);
-        banner1.loadAd("ca-app-pub-9182384050264940/1237660054", adRequest);
+        banner1.loadAd(banner1Id, adRequest);
     }
 
     private boolean showBanner1(){
         if (!checkNetworkConnection()) {
-            showMassage("Нет интернет соединения!");
+            showMassage(noNetwork);
             return false;
         }
         banner1.setRewardedVideoAdListener(new RewardedVideoAdListener() {
@@ -257,7 +257,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
             banner1.show();
         else {
             loadBanner1();
-            showMassage("Загрузка.. Поробуйте чуть позже");
+            showMassage(loading);
             return false;
         }
         loadBanner1();
@@ -316,7 +316,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         });
         findViewById(R.id.infoSave).setOnClickListener(view -> {
             if (saveAndLoad.save())
-                showMassage("Сохранение прошло успешно!");
+                showMassage(saveSuccess);
         });
         findViewById(R.id.infoToMenu).setOnClickListener(view -> backToMenu());
         findViewById(R.id.quitButton).setOnClickListener(view -> backToMenu());
@@ -333,15 +333,15 @@ public class GameActivity extends AppCompatActivity implements Constants,
         if (all)
             count = player.getMoney(currencies[0]);
         if (currencies[0] == currencies[1])
-            showMassage("Выберите разные валюты!");
+            showMassage(choseAnotherCurr);
         else if (player.addMoney(-count,currencies[0],true)) {
             player.addMoney((long) ((double)count / rates[currencies[0]] * rates[currencies[1]]), currencies[1],true);
             if (count != 0) {
-                showMassage("Обмен совершен!");
+                showMassage(exchangeSuccess);
                 updateInfo(player);
             }
         } else {
-            showMassage("Не хватает средств!");
+            showMassage(noMoney);
         }
     }
 
@@ -360,24 +360,20 @@ public class GameActivity extends AppCompatActivity implements Constants,
         }
     }
 
+    final String[] stCurrencies = getResources().getStringArray(R.array.currency);
+
     private int[] getCurrencies(){
         Spinner[] spinners = {findViewById(R.id.rateFrom), findViewById(R.id.rateTo)};
+        final int[] currId = {
+                bottle,rub,euro,bitcoin
+        };
         int currencies[] = new int[2];
-        for (int i = 0; i < 2; i++)
-            switch (spinners[i].getSelectedItem().toString()){
-                case "Бутылки":
-                    currencies[i] = bottle;
-                    break;
-                case "Рубли":
-                    currencies[i] = rub;
-                    break;
-                case "Евро":
-                    currencies[i] = euro;
-                    break;
-                case "Биткоины":
-                    currencies[i] = bitcoin;
-                    break;
-            }
+        for (int i = 0; i < 2; i++) {
+            String curr = spinners[i].getSelectedItem().toString();
+                for (int j = 0; j < 4; j++)
+                    if (Objects.equals(curr, stCurrencies[j]))
+                        currencies[i] = currId[j];
+        }
             return currencies;
     }
 
@@ -438,7 +434,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
         Location location = Create.locations[player.location];
 
-        for (Action action : concatArray(location.getActions(),Create.jobs[player.friend].getActions())) {
+        for (Action action : concatArray(location.getActions(), Create.jobs[player.friend].getActions())) {
             Button button = new Button(this);
             button.setOnClickListener(action);
             button.setText(action.getName());
@@ -469,7 +465,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         int[] currentsIds = {R.id.currentLocation,R.id.currentFriend,R.id.currentHouse,R.id.currentTransport};
         @IdRes
         int[] idButtons = {R.id.locationButton,R.id.friendButton,R.id.houseButton,R.id.transportButton};
-        String subnames[] = {"Перейти:  ","Подружиться:  ","Купить:  ", "Пересесть:  "};
+        String subNames[] = {goTo, makeFriend, buy, change};
 
         for (int i = 0; i < chains.length; i++) {
             String textButton;
@@ -477,9 +473,9 @@ public class GameActivity extends AppCompatActivity implements Constants,
             boolean exception = false;
             try {
                 nextChain = chains[i][progress[i]+1];
-               textButton = subnames[i] + nextChain.getName() + " " + nextChain.getMoney();
+               textButton = subNames[i] + nextChain.getName() + " " + nextChain.getMoney();
             } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-                textButton = "Недоступно";
+                textButton = unavailable;
                 exception = true;
             }
             String textCurrent = chains[i][progress[i]].getName();
@@ -490,8 +486,8 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 button.setOnClickListener(null);
                 continue;
             }
-            int finalI = i;
             Chain finalNextChain = nextChain;
+            int finalI = i;
             button.setOnClickListener(view -> finalNextChain.open(finalI));
         }
     }
@@ -540,14 +536,12 @@ public class GameActivity extends AppCompatActivity implements Constants,
         Player.currentPlayer.setDead(true);
         final boolean[] sure = {false};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Бомж умер!")
-                .setMessage("Полоса здоровья опустилась ниже 0!\n" +
-                        "Вы моежете воскресить его, посмотрев рекламу\n" +
-                        "или начать заного, потеряв прогресс")
+        builder.setTitle(dead)
+                .setMessage(deadMassage)
                 .setIcon(R.drawable.dead)
                 .setCancelable(false)
-                .setPositiveButton("Воскресить!", (dialog, id) -> {})
-                .setNegativeButton("Начать заного", (dialog, id) -> {});
+                .setPositiveButton(resurrect, (dialog, id) -> {})
+                .setNegativeButton(newGame, (dialog, id) -> {});
         AlertDialog alert = builder.create();
         alert.show();
         try {
@@ -561,7 +555,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 backToMenu();
                 alert.dismiss();
             } else {
-                showMassage("Вы точно уверены???");
+                showMassage(sureSt);
                 sure[0] = true;
             }
         });
@@ -593,15 +587,13 @@ public class GameActivity extends AppCompatActivity implements Constants,
         Player.currentPlayer.setCaught(true);
         long money = locations[Player.currentPlayer.location].getFine();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Вас поймали!")
-                .setMessage("Вас поймали менты!\n" +
-                        "Вы можете посмотреть рекламу, чтобы вас отпустили\n" +
-                        "или заплатить штраф (" + Action.moneyToStr(money, rub) + ")")
+        builder.setTitle(caught)
+                .setMessage(caughtMassage + " (" + Action.moneyToStr(money, rub) + ")")
                 .setIcon(R.drawable.prison)
                 .setCancelable(false)
-                .setPositiveButton("Посмотреть рекламу (бесплатно)!", (dialog, id) -> {
+                .setPositiveButton(watchAd, (dialog, id) -> {
                 })
-                .setNegativeButton("Заплатить штраф", (dialog, id) -> {
+                .setNegativeButton(payFine, (dialog, id) -> {
                 });
 
         AlertDialog alert = builder.create();
@@ -620,7 +612,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
                         Player.currentPlayer.setMoney(0, rub);
                     }
                 }
-                showMassage("Для выплаты штрафа, все средства\nбыли переведены в рубли");
+                showMassage(convertMassage);
             }
             alert.dismiss();
             Player.currentPlayer.setCaught(false);
@@ -683,7 +675,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         int num = 0;
         for (Vip vip : Create.vipStore){
             Button item = new Button(this);
-            String text = vip.getName()+ " " + ((vip.isNotInfinity() && player.soldVipItems[num]) ? "(Продано)" : (vip.getCost() + " алм."));
+            String text = vip.getName()+ " " + ((vip.isNotInfinity() && player.soldVipItems[num]) ? sold : (vip.getCost() + diamonds));
             item.setText(text);
             item.setOnClickListener(vip);
             if (vip.isNotInfinity())
@@ -696,12 +688,12 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     private void loadVipBanner() {
         vipBanner = MobileAds.getRewardedVideoAdInstance(this);
-        vipBanner.loadAd("ca-app-pub-9182384050264940/9188603588", adRequest);
+        vipBanner.loadAd(vipBannerId, adRequest);
     }
 
     private void showVipBanner() {
         if (!checkNetworkConnection())
-            showMassage("Нет подключения к интернету!");
+            showMassage(noNetwork);
         else{
             vipBanner.setRewardedVideoAdListener(new RewardedVideoAdListener() {
                 @Override
@@ -726,7 +718,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 @Override
                 public void onRewarded(RewardItem rewardItem) {
                     Player.currentPlayer.addVipMoney(3);
-                    showMassage("Получайте награду!");
+                    showMassage(getReward);
                     updateInfo(Player.currentPlayer);
                     updateVipStore(Player.currentPlayer);
                 }
@@ -746,7 +738,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
             if (vipBanner.isLoaded())
                 vipBanner.show();
             else
-                showMassage("Ошибка загрузки. Попробуйте чуть позже");
+                showMassage(loading);
             loadVipBanner();
         }
     }
@@ -759,14 +751,14 @@ public class GameActivity extends AppCompatActivity implements Constants,
         Study[] study = Create.study;
         for (int i = 0; i < study.length; i++) {
             if (player.learning[i] == 0){
-                String text = "Обучится: " + study[i].getName() + " -" + Action.moneyToStr(study[i].getCost(),study[i].getCurrency());
+                String text = learning + study[i].getName() + " -" + Action.moneyToStr(study[i].getCost(),study[i].getCurrency());
                 Button button = new Button(this);
                 button.setText(text);
                 button.setOnClickListener(study[i]);
                 list.addView(button);
             } else if (player.learning[i] == study[i].getLength()){
                 Button button = new Button(this);
-                String text = study[i].getName() + " (Изучено)";
+                String text = study[i].getName() + studied;
                 button.setText(text);
                 list.addView(button);
             } else {
@@ -803,8 +795,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
                 column.addView(textView);
 
                 Button button = new Button(this);
-                String text = "Изучать";
-                button.setText(text);
+                button.setText(learn);
                 button.setLayoutParams(params);
                 button.setOnClickListener(study[i]);
                 column.addView(button);
@@ -813,7 +804,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
         }
     }
 
-    public interface SaveSettings{
+    interface SaveSettings{
         void saveSettings();
     }
 }

@@ -74,7 +74,7 @@ public class Player implements Constants,Serializable {
     void addRandVipMoney(){
         if (new Random().nextInt(29) == 10){
             vipMoney++;
-            Action.listener.showMassage("Вы нашли алмаз!");
+            Action.listener.showMassage(youFind);
         }
     }
 
@@ -182,7 +182,7 @@ public class Player implements Constants,Serializable {
     }
 
     public String getAge() {
-        return (30 + age/365) + " лет " + age % 365 + " дней";
+        return (30 + age/365) + " " + ageSt + " " + age % 365 + " " + days;
     }
 
     public String getBottles() {

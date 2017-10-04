@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <LinearLathiyout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -35,7 +35,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/info" />
+                    app:srcCompat="@drawable/info"
+                    android:contentDescription="@string/information" />
 
                 <ImageButton
                     android:id="@+id/rateButton"
@@ -43,7 +44,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/rate" />
+                    app:srcCompat="@drawable/rate"
+                    android:contentDescription="@string/rate1"/>
 
                 <ImageButton
                     android:id="@+id/locFriendButton"
@@ -51,7 +53,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/location" />
+                    app:srcCompat="@drawable/location"
+                    android:contentDescription="@string/location1"/>
 
                 <ImageButton
                     android:id="@+id/houseTransportButton"
@@ -59,7 +62,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/house" />
+                    app:srcCompat="@drawable/house"
+                    android:contentDescription="@string/house1"/>
 
                 <ImageButton
                     android:id="@+id/foodButton"
@@ -67,7 +71,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/food" />
+                    app:srcCompat="@drawable/food"
+                    android:contentDescription="@string/food"/>
 
                 <ImageButton
                     android:id="@+id/healthButton"
@@ -75,7 +80,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/health" />
+                    app:srcCompat="@drawable/health"
+                    android:contentDescription="@string/health"/>
 
                 <ImageButton
                     android:id="@+id/energyButton"
@@ -83,7 +89,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/energy" />
+                    app:srcCompat="@drawable/energy"
+                    android:contentDescription="@string/energy"/>
 
                 <ImageButton
                     android:id="@+id/jobButton"
@@ -91,16 +98,17 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/job" />
+                    app:srcCompat="@drawable/job"
+                    android:contentDescription="@string/job"/>
 
                 <ImageButton
                     android:id="@+id/studyButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    ads:srcCompat="@drawable/study" />
+                    ads:srcCompat="@drawable/study"
+                    android:contentDescription="@string/study"/>
 
                 <ImageButton
                     android:id="@+id/vipButton"
@@ -108,7 +116,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    ads:srcCompat="@drawable/vip" />
+                    ads:srcCompat="@drawable/vip"
+                    android:contentDescription="@string/vipStore"/>
 
                 <ImageButton
                     android:id="@+id/quitButton"
@@ -116,9 +125,10 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/quit" />
+                    app:srcCompat="@drawable/quit"
+                    android:contentDescription="@string/exit"/>
 
-            </LinearLayout>
+            </LinearLathiyout>
         </RelativeLayout>
     </HorizontalScrollView>
 
@@ -128,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/infoList"
@@ -141,17 +151,16 @@
                 android:layout_height="20dp" />
 
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Информация"
+                android:text="@string/information"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1">
 
                 <ScrollView
@@ -170,10 +179,9 @@
                             android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/textView3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Возраст:"
+                                android:text="@string/age"
                                 android:textSize="18sp" />
 
                             <Space
@@ -186,7 +194,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="25"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -195,10 +202,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Локация:"
+                                android:text="@string/location"
                                 android:textSize="18sp" />
 
                             <Space
@@ -209,7 +215,6 @@
                                 android:id="@+id/info_location"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -218,10 +223,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Транспорт:"
+                                android:text="@string/transport"
                                 android:textSize="18sp" />
 
                             <Space
@@ -232,7 +236,6 @@
                                 android:id="@+id/info_transport"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -241,10 +244,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView6"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Жильё:"
+                                android:text="@string/house"
                                 android:textSize="18sp" />
 
                             <Space
@@ -255,7 +257,6 @@
                                 android:id="@+id/info_house"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -264,10 +265,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView15"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Кореш:"
+                                android:text="@string/friend"
                                 android:textSize="18sp" />
 
                             <Space
@@ -278,7 +278,6 @@
                                 android:id="@+id/info_friend"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -287,10 +286,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView17"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Бутылок:"
+                                android:text="@string/bottles"
                                 android:textSize="18sp" />
 
                             <Space
@@ -301,7 +299,6 @@
                                 android:id="@+id/info_bottles"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -310,10 +307,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView9"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Рублей:"
+                                android:text="@string/rubles"
                                 android:textSize="18sp" />
 
                             <Space
@@ -324,7 +320,6 @@
                                 android:id="@+id/info_rubles"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -333,10 +328,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView11"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Евро:"
+                                android:text="@string/euro"
                                 android:textSize="18sp" />
 
                             <Space
@@ -347,7 +341,6 @@
                                 android:id="@+id/info_euros"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -356,10 +349,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView13"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Биткоины:"
+                                android:text="@string/bitcoins"
                                 android:textSize="18sp" />
 
                             <Space
@@ -370,7 +362,6 @@
                                 android:id="@+id/info_bitcoins"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -379,10 +370,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView13"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Алмазы:"
+                                android:text="@string/diamonds"
                                 android:textSize="18sp" />
 
                             <Space
@@ -393,7 +383,6 @@
                                 android:id="@+id/info_vipMoney"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TextView"
                                 android:textSize="18sp" />
                         </TableRow>
 
@@ -406,7 +395,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_weight="0"
                 android:orientation="horizontal">
 
                 <Button
@@ -414,14 +402,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Сохранить" />
+                    android:text="@string/save" />
 
                 <Button
                     android:id="@+id/infoToMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Выйти в меню" />
+                    android:text="@string/exit" />
             </LinearLayout>
 
         </LinearLayout>
@@ -438,7 +426,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -446,14 +433,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Продвигайтесь по локациям, чтобы открыть новые возможности" />
+                android:text="@string/tipLocation" />
 
             <TextView
-                android:id="@+id/textView16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Локация"
+                android:text="@string/location1"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -463,12 +449,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="Текущ.:" />
+                    android:gravity="end"
+                    android:text="@string/now" />
 
                 <Space
                     android:layout_width="20dp"
@@ -479,29 +464,26 @@
                     android:id="@+id/currentLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/locationButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tipFriend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Кореша помогут вам найти более лучшую работу" />
+                android:text="@string/tipFriend" />
 
             <TextView
-                android:id="@+id/textView19"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Кореш"
+                android:text="@string/friend1"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -511,12 +493,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="Текущ.:" />
+                    android:gravity="end"
+                    android:text="@string/now" />
 
                 <Space
                     android:layout_width="20dp"
@@ -527,15 +508,13 @@
                     android:id="@+id/currentFriend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/friendButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>
@@ -550,7 +529,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -558,14 +536,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Покупай дома и транспорт, чтобы переходить на новые локации" />
+                android:text="@string/tipHouse" />
 
             <TextView
-                android:id="@+id/textView16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Дом"
+                android:text="@string/house1"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -575,12 +552,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="Текущ.:" />
+                    android:gravity="end"
+                    android:text= "@string/now" />
 
                 <Space
                     android:layout_width="20dp"
@@ -591,15 +567,13 @@
                     android:id="@+id/currentHouse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/houseButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tipTransport"
@@ -608,11 +582,10 @@
                 android:gravity="center_horizontal" />
 
             <TextView
-                android:id="@+id/textView19"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Транспорт"
+                android:text= "@string/transport1"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -622,12 +595,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="Текущ.:" />
+                    android:gravity="end"
+                    android:text= "@string/now" />
 
                 <Space
                     android:layout_width="20dp"
@@ -638,15 +610,13 @@
                     android:id="@+id/currentTransport"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/transportButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>
@@ -668,14 +638,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Еда важна для поддержания здоровья!\nНе стоит о ней забывать." />
+                android:text="@string/tipFood" />
 
             <TextView
-                android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Легально"
+                android:text="@string/legal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -684,15 +653,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Нелегально"
+                android:text= "@string/illegal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -700,7 +667,8 @@
                 android:id="@+id/foodIllegalList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -722,14 +690,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Здоровье привыше всего! Чем выше уровень еды, тем быстрее восстанавливается здоровье. Если оно опуститься ниже 0, смерти не миновать! Так же влияет на бодрость" />
+                android:text="@string/tipHealth" />
 
             <TextView
-                android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Легально"
+                android:text= "@string/legal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -742,11 +709,10 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Нелегально"
+                android:text="@string/illegal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -754,7 +720,8 @@
                 android:id="@+id/healthIllegalList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -776,14 +743,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Чем выше уровень здоровья, тем быстрее восстанавливается бодрость. Сильно влияет на эффективность работы" />
+                android:text="@string/tipEnergy" />
 
             <TextView
-                android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Легально"
+                android:text= "@string/legal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -796,11 +762,10 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Нелегально"
+                android:text= "@string/illegal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -808,7 +773,8 @@
                 android:id="@+id/energyIllegalList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -830,7 +796,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="При обмене валют округление\n идет в меньшую сторону!" />
+                android:text="@string/tipRate" />
 
             <Space
                 android:layout_width="match_parent"
@@ -845,12 +811,11 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="из" />
+                        android:text="@string/from" />
 
                     <Spinner
                         android:id="@+id/rateFrom"
@@ -860,12 +825,11 @@
                         android:entries="@array/currency" />
 
                     <TextView
-                        android:id="@+id/textView21"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="в" />
+                        android:text="@string/to" />
 
                     <Spinner
                         android:id="@+id/rateTo"
@@ -880,30 +844,27 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/textView29"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Курс:" />
+                        android:text="@string/rate" />
 
                     <TextView
-                        android:id="@+id/textView28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="1"
+                        android:text="@string/_1"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/textView26"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="к" />
+                        android:text="@string/to1" />
 
                     <TextView
                         android:id="@+id/rateRate"
@@ -911,7 +872,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="25"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -922,12 +882,11 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/textView29"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Обмен:" />
+                        android:text="@string/exchange" />
 
                     <TextView
                         android:id="@+id/rateFirstCurr"
@@ -935,17 +894,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="1"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/textView26"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="=" />
+                        android:text="@string/equally" />
 
                     <TextView
                         android:id="@+id/rateSecondCurr"
@@ -953,7 +910,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="25"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -971,17 +927,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="количество" />
+                    android:text="@string/count" />
 
                 <EditText
+                    android:hint= "@string/count"
                     android:id="@+id/rateCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="number"
-                    android:singleLine="false"
-                    android:text="100" />
+                    android:text="@string/_100" />
             </LinearLayout>
 
             <Space
@@ -992,13 +948,13 @@
                 android:id="@+id/rateTranslate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Перевести" />
+                android:text="@string/translate" />
 
             <Button
                 android:id="@+id/rateTranslateAll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Перевести все" />
+                android:text="@string/translateAll" />
 
         </LinearLayout>
     </ScrollView>
@@ -1020,14 +976,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Работа - основной заработок в игре. Её эффективность сильно зависит от уровня бодрости. Так же как и все действия делится на легальную и нет. Если работа нелегальна, то есть высоких шанс, что вас поймают. Будьте осторожны!" />
+                android:text="@string/tipJob" />
 
             <TextView
-                android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Легально"
+                android:text= "@string/legal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -1040,11 +995,10 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Нелегально"
+                android:text= "@string/illegal"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -1052,7 +1006,8 @@
                 android:id="@+id/jobIllegalList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -1075,7 +1030,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Здесь вы можете купить уникальные товары за особую валюту - алмазы.  Они могут попадаться, когда вы совершаете какое либо действие. Либо вы можете их получить, посмотрев рекламу (кнопка добавить)." />
+                android:text="@string/tipVip" />
 
             <Space
                 android:layout_width="match_parent"
@@ -1088,12 +1043,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView1488288"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="Алмазы: "
+                    android:gravity="end"
+                    android:text= "@string/diamonds1"
                     android:textSize="18sp" />
 
                 <TextView
@@ -1102,7 +1056,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="123123"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
@@ -1111,7 +1064,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Добавить" />
+                    android:text="@string/add" />
             </LinearLayout>
 
             <Space
@@ -1119,11 +1072,10 @@
                 android:layout_height="20dp" />
 
             <TextView
-                android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Vip Магазин"
+                android:text="@string/vipStore"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
 
@@ -1143,7 +1095,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1156,7 +1108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Здесь вы можете проходить разные курсы, чтобы открыть корешей, транспорт и т.п. Будте внимательнее, учеба отнимает еду, здоровье и еду!" />
+                android:text="@string/tipStudy" />
 
             <Space
                 android:layout_width="match_parent"
@@ -1164,11 +1116,10 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Учёба"
+                android:text= "@string/study"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
 
@@ -1200,15 +1151,15 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="25dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/food" />
+                    app:srcCompat="@drawable/food"
+                    android:contentDescription="@string/food" />
 
                 <ProgressBar
                     android:id="@+id/bar_food"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:max="100"
@@ -1217,7 +1168,6 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="0"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -1225,22 +1175,19 @@
                         android:id="@+id/text_food"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="12" />
+                        android:layout_weight="0" />
 
                     <TextView
-                        android:id="@+id/textView27"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="/" />
+                        android:text="@string/backslash" />
 
                     <TextView
                         android:id="@+id/text_food_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="100" />
+                        android:layout_weight="0" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -1251,11 +1198,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView2"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_weight="0.00"
-                    app:srcCompat="@drawable/health" />
+                    app:srcCompat="@drawable/health"
+                    android:contentDescription="@string/health" />
 
                 <ProgressBar
                     android:id="@+id/bar_health"
@@ -1269,7 +1216,6 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="0"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -1277,22 +1223,19 @@
                         android:id="@+id/text_health"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="12" />
+                        android:layout_weight="0"/>
 
                     <TextView
-                        android:id="@+id/textView27"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="/" />
+                        android:text="@string/backslash" />
 
                     <TextView
                         android:id="@+id/text_health_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="100" />
+                        android:layout_weight="0" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -1303,15 +1246,15 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView3"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    app:srcCompat="@drawable/energy" />
+                    app:srcCompat="@drawable/energy"
+                    android:contentDescription="@string/energy" />
 
                 <ProgressBar
                     android:id="@+id/bar_energy"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:max="100"
@@ -1320,7 +1263,6 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="0"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -1328,31 +1270,28 @@
                         android:id="@+id/text_energy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="12" />
+                        android:layout_weight="0" />
 
                     <TextView
-                        android:id="@+id/textView27"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="/" />
+                        android:text= "@string/backslash" />
 
                     <TextView
                         android:id="@+id/text_energy_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="100" />
+                        android:layout_weight="0" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.00"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1361,18 +1300,16 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView20"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="руб: " />
+                        android:text="@string/rubles1" />
 
                     <TextView
                         android:id="@+id/bar_rubles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1000000000"
                         android:textColor="@android:color/black" />
                 </LinearLayout>
 
@@ -1383,18 +1320,16 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="евро: " />
+                        android:text="@string/euros1" />
 
                     <TextView
                         android:id="@+id/bar_euros"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1488228"
                         android:textColor="@android:color/black" />
                 </LinearLayout>
 
@@ -1405,22 +1340,19 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="биткоины: " />
+                        android:text="@string/bitcoins1" />
 
                     <TextView
                         android:id="@+id/bar_bitcoins"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="258846"
                         android:textColor="@android:color/black" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

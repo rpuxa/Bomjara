@@ -2,7 +2,7 @@ package Game;
 
 import android.view.View;
 
-public class Study implements View.OnClickListener {
+public class Study implements View.OnClickListener, Constants {
     private int id;
     private String name;
     private int cost;
@@ -51,10 +51,10 @@ public class Study implements View.OnClickListener {
     public void onClick(View view) {
         Player player = Player.currentPlayer;
         if (player.learning[id] == 0 && !player.addMoney(-cost, currency, true))
-            Action.listener.showMassage("Не хватает средств!");
+            Action.listener.showMassage(noMoney);
         else {
             player.learning[id]++;
-            new Action("",0,Constants.none,-5,-5,-5,Constants.none,true).onClick(view);
+            new Action("",0, none,-5,-5,-5, none,true).onClick(view);
             listener.showStudy();
         }
     }
