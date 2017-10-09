@@ -3,56 +3,76 @@ package Game;
 import java.io.Serializable;
 import java.util.Random;
 
+import Game.Serialization.PlayerField;
+
 public class Player implements Constants,Serializable {
 
     private static final long serialVersionUID = 1001L;
 
     public static Player currentPlayer = createPlayer();
 
+    @PlayerField
     private int id;
+    @PlayerField
     public int age;
+    @PlayerField
     public int location;
+    @PlayerField
     public int transport;
+    @PlayerField
     public int house;
+    @PlayerField
     public int friend;
+    @PlayerField
     private long bottles;
+    @PlayerField
     private long rubles;
+    @PlayerField
     private long euros;
+    @PlayerField
     private long bitcoins;
+    @PlayerField
     private long vipMoney;
+    @PlayerField
     private double food;
+    @PlayerField
     private double health;
+    @PlayerField
     private double energy;
+    @PlayerField
     public double[] maxIndicators = {100,100,100};
+    @PlayerField
     public boolean[] soldVipItems = new boolean[Create.vipStore.length];
+    @PlayerField
     public int[] learning = new int[Create.study.length];
+    @PlayerField
     double efficiency = 1;
+    @PlayerField
     private boolean dead;
+    @PlayerField
     private boolean caught;
 
-    private Player(int id, int age, int location, int transport, int house, int friend,
-                   long bottles, long rubles, long euros, long bitcoins, long vipMoney,
-                   double food, double health, double energy, boolean dead, boolean caught) {
-        this.id = id;
-        this.age = age;
-        this.location = location;
-        this.transport = transport;
-        this.house = house;
-        this.friend = friend;
-        this.bottles = bottles;
-        this.rubles = rubles;
-        this.euros = euros;
-        this.bitcoins = bitcoins;
-        this.vipMoney = vipMoney;
-        this.food = food;
-        this.health = health;
-        this.energy = energy;
-        this.dead = dead;
-        this.caught = caught;
+    private Player(Object... fields) {
+        this.id = (int) fields[0];
+        this.age = (int) fields[1];
+        this.location = (int) fields[2];
+        this.transport = (int) fields[3];
+        this.house = (int) fields[4];
+        this.friend = (int) fields[5];
+        this.bottles = (long) fields[6];
+        this.rubles = (long) fields[7];
+        this.euros = (long) fields[8];
+        this.bitcoins = (long) fields[9];
+        this.vipMoney = (long) fields[10];
+        this.food = (double) fields[11];
+        this.health = (double) fields[12];
+        this.energy = (double) fields[13];
+        this.dead = (boolean) fields[14];
+        this.caught = (boolean) fields[15];
     }
 
     public static Player createPlayer() {
-        return new Player(new Random().nextInt(), 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 75, 75, 50, false, false);
+        return new Player(new Random().nextInt(), 0, 0, 0, 0, 0, 0L, 50L, 0L, 0L, 0L, 75.0, 75.0, 50.0, false, false);
     }
 
     void addMaxIndicators(double count, int type){

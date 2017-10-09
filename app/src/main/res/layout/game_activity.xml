@@ -21,9 +21,10 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
 
-            <LinearLathiyout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -34,101 +35,101 @@
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/information"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/info"
-                    android:contentDescription="@string/information" />
+                    app:srcCompat="@drawable/info" />
 
                 <ImageButton
                     android:id="@+id/rateButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/rate1"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/rate"
-                    android:contentDescription="@string/rate1"/>
+                    app:srcCompat="@drawable/rate" />
 
                 <ImageButton
                     android:id="@+id/locFriendButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/location1"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/location"
-                    android:contentDescription="@string/location1"/>
+                    app:srcCompat="@drawable/location" />
 
                 <ImageButton
                     android:id="@+id/houseTransportButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/house1"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/house"
-                    android:contentDescription="@string/house1"/>
+                    app:srcCompat="@drawable/house" />
 
                 <ImageButton
                     android:id="@+id/foodButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/food"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/food"
-                    android:contentDescription="@string/food"/>
+                    app:srcCompat="@drawable/food" />
 
                 <ImageButton
                     android:id="@+id/healthButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/health"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/health"
-                    android:contentDescription="@string/health"/>
+                    app:srcCompat="@drawable/health" />
 
                 <ImageButton
                     android:id="@+id/energyButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/energy"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/energy"
-                    android:contentDescription="@string/energy"/>
+                    app:srcCompat="@drawable/energy" />
 
                 <ImageButton
                     android:id="@+id/jobButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/job"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/job"
-                    android:contentDescription="@string/job"/>
+                    app:srcCompat="@drawable/job" />
 
                 <ImageButton
                     android:id="@+id/studyButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/study"
                     android:scaleType="centerCrop"
-                    ads:srcCompat="@drawable/study"
-                    android:contentDescription="@string/study"/>
+                    ads:srcCompat="@drawable/study" />
 
                 <ImageButton
                     android:id="@+id/vipButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/vipStore"
                     android:scaleType="centerCrop"
-                    ads:srcCompat="@drawable/vip"
-                    android:contentDescription="@string/vipStore"/>
+                    ads:srcCompat="@drawable/vip" />
 
                 <ImageButton
                     android:id="@+id/quitButton"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/exit"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/quit"
-                    android:contentDescription="@string/exit"/>
+                    app:srcCompat="@drawable/quit" />
 
-            </LinearLathiyout>
+            </LinearLayout>
         </RelativeLayout>
     </HorizontalScrollView>
 

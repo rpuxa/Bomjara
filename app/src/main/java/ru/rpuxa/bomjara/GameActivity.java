@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ import Game.Constants;
 import Game.Create;
 import Game.Location;
 import Game.Player;
+import Game.Serialization.SerializationProcess;
 import Game.Settings;
 import Game.Study;
 import Game.Vip;
@@ -63,6 +65,7 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SerializationProcess.serialization(Player.currentPlayer);
         createVipStore();
         createStudy();
         Action.listener = this;
@@ -149,15 +152,17 @@ public class GameActivity extends AppCompatActivity implements Constants,
         showStudy();
     }
 
-    public void firstPrologueButtonClickListener(View view){
+    public void firstPrologueButtonClickListener(View view) {
         showPrologueN(FIRST_PROLOGUE,view);
         prologueChosen = FIRST_PROLOGUE;
     }
-    public void secondPrologueButtonClickListener(View view){
+
+    public void secondPrologueButtonClickListener(View view) {
         showPrologueN(SECOND_PROLOGUE,view );
         prologueChosen = SECOND_PROLOGUE;
     }
-    public void thirdPrologueButtonClickListener(View view){
+
+    public void thirdPrologueButtonClickListener(View view) {
         showPrologueN(THIRD_PROLOGUE, view);
         prologueChosen = THIRD_PROLOGUE;
     }
@@ -360,9 +365,8 @@ public class GameActivity extends AppCompatActivity implements Constants,
         }
     }
 
-    final String[] stCurrencies = getResources().getStringArray(R.array.currency);
-
     private int[] getCurrencies(){
+        final String[] stCurrencies = getResources().getStringArray(R.array.currency);
         Spinner[] spinners = {findViewById(R.id.rateFrom), findViewById(R.id.rateTo)};
         final int[] currId = {
                 bottle,rub,euro,bitcoin
@@ -635,29 +639,23 @@ public class GameActivity extends AppCompatActivity implements Constants,
 
     @Override
     public void onResume() {
-        try {
+        if (banner1 != null)
             banner1.resume(this);
-        } catch (NullPointerException ignore){
-        }
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        try {
-        banner1.pause(this);
-        } catch (NullPointerException ignore){
-        }
+        if (banner1 != null)
+            banner1.pause(this);
         saveAndLoad.save();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        try {
-        banner1.destroy(this);
-        } catch (NullPointerException ignore){
-        }
+        if (banner1 != null)
+            banner1.destroy(this);
         super.onDestroy();
     }
 
