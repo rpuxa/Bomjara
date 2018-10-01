@@ -53,10 +53,11 @@ public class Action implements Constants, View.OnClickListener{
             long energy = player.addEnergy(energyAdd);
             long food = player.addFood(foodAdd);
             long health = player.addHealth(healthAdd);
-            listener.showMassage(addToStr(food,foodSt,true) + addToStr(health,healthSt,false) + addToStr(energy,energySt,false),true);
+            if (energy != 0 || food != 0 || health !=0)
+                listener.showMassage(addToStr(food,foodSt,true) + addToStr(health,healthSt,false) + addToStr(energy,energySt,false),true);
             player.addAge();
             player.checkHealth();
-            if (energy != 0 || food != 0 || health !=0)
+            if (energy != 0 || food != 0)
                 player.addRandVipMoney();
         }
         listener.updateInfo(player);

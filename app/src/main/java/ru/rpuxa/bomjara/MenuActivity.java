@@ -19,6 +19,9 @@ import java.io.ObjectOutputStream;
 
 import Game.Constants;
 import Game.Player;
+import Game.Serialization.SerializablePlayer;
+import Game.Serialization.SerializationProcess;
+import Game.Serialization.VersionException;
 import Game.Settings;
 
 public class MenuActivity extends AppCompatActivity implements SaveAndLoad, GameActivity.SaveSettings, Constants {
@@ -106,7 +109,7 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad, Game
         File file = new File(this.getFilesDir(), name);
         try (ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(file))){
             if (type == PLAYER)
-                obj.writeObject(Player.currentPlayer);
+                obj.writeObject(SerializationProcess.serialization(Player.currentPlayer));
             else if (type == SETTINGS)
                 obj.writeObject(GameActivity.settings);
             obj.flush();
@@ -126,11 +129,14 @@ public class MenuActivity extends AppCompatActivity implements SaveAndLoad, Game
         File file = new File(this.getFilesDir(), name);
         try (ObjectInputStream obj = new ObjectInputStream(new FileInputStream(file))){
             if (type == PLAYER)
-                Player.currentPlayer = (Player) obj.readObject();
+                Player.currentPlayer = SerializationProcess.deserialization((SerializablePlayer) obj.readObject());
             else if (type == SETTINGS)
                 GameActivity.settings = (Settings) obj.readObject();
                 return true;
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            return false;
+        } catch (VersionException e){
+            e.printStackTrace();
             return false;
         }
     }

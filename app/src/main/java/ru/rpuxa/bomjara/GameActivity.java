@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,9 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
@@ -196,24 +193,11 @@ public class GameActivity extends AppCompatActivity implements Constants,
         prologueDialog.findViewById(idsPrologues[prologueIndex]).setVisibility(View.VISIBLE);
     }
 
-    private AdView banner0;
     private RewardedVideoAd banner1;
     private AdRequest adRequest = new AdRequest.Builder().build();
 
     private void showBanner0(){
         MobileAds.initialize(getApplicationContext(), appId);
-        banner0 = findViewById(R.id.adBanner0);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        banner0.setAdListener(new AdListener(){
-            @Override
-            public void onAdOpened() {
-                banner0.setVisibility(View.GONE);
-            }
-        });
-        if (!Player.currentPlayer.soldVipItems[adFree])
-            banner0.loadAd(adRequest);
-        else
-            banner0.setVisibility(View.GONE);
     }
 
     private void loadBanner1(){

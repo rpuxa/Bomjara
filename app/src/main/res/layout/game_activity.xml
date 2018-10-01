@@ -8,26 +8,17 @@
     android:orientation="vertical"
     tools:context="ru.rpuxa.bomjara.GameActivity">
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adBanner0"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/banner0" />
-
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <ImageButton

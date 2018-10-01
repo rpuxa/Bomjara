@@ -7,72 +7,74 @@ import Game.Serialization.PlayerField;
 
 public class Player implements Constants,Serializable {
 
-    private static final long serialVersionUID = 1001L;
-
     public static Player currentPlayer = createPlayer();
 
     @PlayerField
-    private int id;
-    @PlayerField
     public int age;
     @PlayerField
-    public int location;
+    public long bitcoins;
     @PlayerField
-    public int transport;
+    public long bottles;
     @PlayerField
-    public int house;
+    public boolean caught;
+    @PlayerField
+    public boolean dead;
+    @PlayerField
+    public double efficiency = 1;
+    @PlayerField
+    public double energy;
+    @PlayerField
+    public long euros;
+    @PlayerField
+    public double food;
     @PlayerField
     public int friend;
     @PlayerField
-    private long bottles;
+    public double health;
     @PlayerField
-    private long rubles;
+    public int house;
     @PlayerField
-    private long euros;
+    public int id;
     @PlayerField
-    private long bitcoins;
+    public int[] learning;
     @PlayerField
-    private long vipMoney;
+    public int location;
     @PlayerField
-    private double food;
+    public double[] maxIndicators;
     @PlayerField
-    private double health;
+    public long rubles;
     @PlayerField
-    private double energy;
+    public boolean[] soldVipItems;
     @PlayerField
-    public double[] maxIndicators = {100,100,100};
+    public int transport;
     @PlayerField
-    public boolean[] soldVipItems = new boolean[Create.vipStore.length];
-    @PlayerField
-    public int[] learning = new int[Create.study.length];
-    @PlayerField
-    double efficiency = 1;
-    @PlayerField
-    private boolean dead;
-    @PlayerField
-    private boolean caught;
+    public long vipMoney;
 
-    private Player(Object... fields) {
-        this.id = (int) fields[0];
-        this.age = (int) fields[1];
-        this.location = (int) fields[2];
-        this.transport = (int) fields[3];
-        this.house = (int) fields[4];
-        this.friend = (int) fields[5];
-        this.bottles = (long) fields[6];
-        this.rubles = (long) fields[7];
-        this.euros = (long) fields[8];
-        this.bitcoins = (long) fields[9];
-        this.vipMoney = (long) fields[10];
-        this.food = (double) fields[11];
-        this.health = (double) fields[12];
-        this.energy = (double) fields[13];
-        this.dead = (boolean) fields[14];
-        this.caught = (boolean) fields[15];
+    public Player(Object... fields) {
+        this.age = (int) fields[0];
+        this.bitcoins = (long) fields[1];
+        this.bottles = (long) fields[2];
+        this.caught = (boolean) fields[3];
+        this.dead = (boolean) fields[4];
+        this.efficiency = (double) fields[5];
+        this.energy = (double) fields[6];
+        this.euros = (long) fields[7];
+        this.food = (double) fields[8];
+        this.friend = (int) fields[9];
+        this.health = (double) fields[10];
+        this.house = (int) fields[11];
+        this.id = (int) fields[12];
+        this.learning = (int[]) fields[13];
+        this.location = (int) fields[14];
+        this.maxIndicators = (double[]) fields[15];
+        this.rubles = (long) fields[16];
+        this.soldVipItems = (boolean[]) fields[17];
+        this.transport = (int) fields[18];
+        this.vipMoney = (long) fields[19];
     }
 
     public static Player createPlayer() {
-        return new Player(new Random().nextInt(), 0, 0, 0, 0, 0, 0L, 50L, 0L, 0L, 0L, 75.0, 75.0, 50.0, false, false);
+        return new Player(0,0L,0L,false,false,1.0,75.0,0L,75.0,0,75.0,0,new Random().nextInt(), new int[Create.study.length],0, new double[]{100,100,100},50L,new boolean[Create.vipStore.length],0,0L);
     }
 
     void addMaxIndicators(double count, int type){
@@ -146,7 +148,7 @@ public class Player implements Constants,Serializable {
 
     public boolean addMoney(long money, int currency, boolean withoutCoefficient){
         if (!withoutCoefficient && money > 0)
-            money *= coefficient(energy, true,Constants.energy) * efficiency;
+            money = Math.round(money * coefficient(energy, true,Constants.energy) * efficiency);
         switch (currency) {
             case bottle:
                 bottles += money;

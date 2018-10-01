@@ -249,23 +249,10 @@ public class Create implements Constants {
                         player.addMaxIndicators(10, energy);
                     }
                 },
-                new Vip("+10 к макс. запасу бодрости", false, 9) {
-                    @Override
-                    void reward(Player player) {
-                        player.addMaxIndicators(10, energy);
-                    }
-                },
-                new Vip("+10% к эффективности работы", true, 15) {
+                new Vip("+10% к эффективности работы", false, 15) {
                     @Override
                     void reward(Player player) {
                         player.efficiency += .1;
-                    }
-                },
-                new Vip("Отключить баннер сверху", true, 29) {
-                    @Override
-                    void reward(Player player) {
-                        player.soldVipItems[adFree] = true;
-                        Action.listener.showMassage("Перезапустите игру!");
                     }
                 }
         };

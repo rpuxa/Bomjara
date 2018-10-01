@@ -66,5 +66,11 @@
     <string name="health">Здоровье</string>
     <string name="energy">Бодрость</string>
     <string name="job">Работа</string>
-
+    <string name="continueGame">Продолжить игру</string>
+    <string name="newGame">Новая игра</string>
+    <string name="settings">Настройки</string>
+    <string name="showTips">Включить подсказки</string>
+    <string name="Exit">Выход</string>
+    <string name="ChosePrehistory">Выберите предысторию</string>
+    <string name="startSurvival">Начать выживание</string>
 </resources>
